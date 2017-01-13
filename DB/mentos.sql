@@ -1,4 +1,4 @@
---È¸¿øÁ¤º¸ Å×ÀÌºí
+--íšŒì›ì •ë³´ í…Œì´ë¸”
 create table client_info(
 c_no number primary key,
 c_name nvarchar2(20) not null,
@@ -9,7 +9,7 @@ c_age number,
 c_gender char(1)
 );
 
---ÀÛ¼ºµÈ ±Û
+--ì‘ì„±ëœ ê¸€ í…Œì´ë¸”
 create table memo_info(
 m_no number primary key,
 m_content nvarchar2(2000),
@@ -19,12 +19,12 @@ m_latitude number,
 m_writer number
 );
 
---¿Ü·¡Å° ¼³Á¤
+--ì™¸ë˜í‚¤ ì§€ì •
 alter table memo_info
 add constraints memo1 foreign key (m_writer)
 references client_info(c_no);
 
---»ö Å×ÀÌºí
+-- ìƒ‰ í…Œì´ë¸”
 create table memo_color(
 mc_no number primary key,
 mc_r number not null,
@@ -32,13 +32,13 @@ mc_g number not null,
 mc_b number not null
 );
 
---°¨Á¤ Å×ÀÌºí
+-- ê°ì • í…Œì´ë¸”
 create table emotion(
 e_no number primary key,
 e_name nvarchar2(20) not null
 );
 
---ºĞ¼® Å×ÀÌºí(¹Ì¿Ï)
+--ë¶„ì„ í…Œì´ë¸”(ë¯¸ì™„)
 create table analysis( 
 a_no number primary key,
 a_keyword nvarchar2(30) not null,
