@@ -7,4 +7,4 @@ SK 고용디딤돌 자바 C반 5조 팀 프로젝트 "MENTal Of uS" 지친 현�
 - 팀   원   2 : 최민진 brownminjin@naver.com
 - DB 관 리 자 : 윤장원 yoonjw91@gmail.com
 - 팀   원   4 : 라건주 ragunju@naver.com
-- 팀   원   5 : 박찬준 pcj9000@gmail.com
+- R 구현 및 서포터 : 박찬준 pcj9000@gmail.com
