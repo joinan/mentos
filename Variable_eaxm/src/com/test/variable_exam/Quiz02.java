@@ -49,7 +49,7 @@ public class Quiz02 {
 							System.out.println("틀렸습니다. 정답을 입력하세요.");
 						}
 					}
-					System.out.println("계속 하시겠습니까?(Y : 1, N : 2)");
+					System.out.println("계속 하시겠습니까?(Y/N)");
 					select = scan.next();
 					flag = 0;
 					if (select.equals("N")) {
