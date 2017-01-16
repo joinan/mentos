@@ -27,14 +27,13 @@ public class Quiz01 {
 
 			while (flag < 1) {
 				ans = scan.next();
-				if (ans.equals("곱창")){
+				if (ans.equals("곱창")) {
 					flag++;
-				}
-				else{
+				} else {
 					System.out.println("틀렸습니다. 정답을 입력하세요.");
 				}
 			}
-			
+
 			flag = 0;
 			System.out.println("2번 문제 : 우리반 사람들 중에 한명");
 			System.out.println("┌───────────┐");
@@ -43,18 +42,17 @@ public class Quiz01 {
 			System.out.println("│ 다　호　최　유 │");
 			System.out.println("│ 상　열　준　범 │");
 			System.out.println("└───────────┘");
-			
+
 			while (flag < 1) {
 				ans = scan.next();
-				if (ans.equals("유희상")){
+				if (ans.equals("유희상")) {
 					flag++;
-				}
-				else{
+				} else {
 					System.out.println("틀렸습니다. 정답을 입력하세요.");
 				}
 			}
 			flag = 0;
-			
+
 			System.out.println("3번 문제 : 남자배우");
 			System.out.println("┌───────────┐");
 			System.out.println("│ 건　제　검　박 │");
@@ -64,10 +62,9 @@ public class Quiz01 {
 			System.out.println("└───────────┘");
 			while (flag < 1) {
 				ans = scan.next();
-				if (ans.equals("공유")){
+				if (ans.equals("공유")) {
 					flag++;
-				}
-				else{
+				} else {
 					System.out.println("틀렸습니다. 정답을 입력하세요.");
 				}
 			}
@@ -81,10 +78,9 @@ public class Quiz01 {
 			System.out.println("└───────────┘");
 			while (flag < 1) {
 				ans = scan.next();
-				if (ans.equals("이명우")){
+				if (ans.equals("이명우")) {
 					flag++;
-				}
-				else{
+				} else {
 					System.out.println("틀렸습니다. 정답을 입력하세요.");
 				}
 			}
@@ -98,10 +94,9 @@ public class Quiz01 {
 			System.out.println("└───────────┘");
 			while (flag < 1) {
 				ans = scan.next();
-				if (ans.equals("치타")){
+				if (ans.equals("치타")) {
 					flag++;
-				}
-				else{
+				} else {
 					System.out.println("틀렸습니다. 정답을 입력하세요.");
 				}
 			}
@@ -115,14 +110,13 @@ public class Quiz01 {
 			System.out.println("└───────────┘");
 			while (flag < 1) {
 				ans = scan.next();
-				if (ans.equals("승마")){
+				if (ans.equals("승마")) {
 					flag++;
-				}
-				else{
+				} else {
 					System.out.println("틀렸습니다. 정답을 입력하세요.");
 				}
 			}
-			
+
 			flag = 0;
 			System.out.println("7번 문제 : 기업");
 			System.out.println("┌───────────┐");
@@ -133,10 +127,9 @@ public class Quiz01 {
 			System.out.println("└───────────┘");
 			while (flag < 1) {
 				ans = scan.next();
-				if (ans.equals("케이티")){
+				if (ans.equals("케이티")) {
 					flag++;
-				}
-				else{
+				} else {
 					System.out.println("틀렸습니다. 정답을 입력하세요.");
 				}
 			}
@@ -150,17 +143,16 @@ public class Quiz01 {
 			System.out.println("└───────────┘");
 			while (flag < 1) {
 				ans = scan.next();
-				if (ans.equals("제티")){
+				if (ans.equals("제티")) {
 					flag++;
-				}
-				else{
+				} else {
 					System.out.println("틀렸습니다. 정답을 입력하세요.");
 				}
-			}			
+			}
 			System.out.println("☆★☆★☆★☆★☆★☆★☆★☆★☆★");
 			System.out.println("★축하합니다. 게임을 종료합니다.☆");
 			System.out.println("☆★☆★☆★☆★☆★☆★☆★☆★☆★");
-			
+
 		} else if (menu == 2) {
 			System.out.println("게임을 종료합니다.");
 		} else {
