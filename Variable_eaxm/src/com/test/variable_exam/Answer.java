@@ -12,7 +12,6 @@ public class Answer {
 		Question quest = new Question();
 		int pick;
 		int menu;
-		int index;
 		String[] answer = {"곱창", "공유", "이명우", "치타"};
 		String[] question1 = {"육","두","쌍","칸","짜","까","치","곱","창","동","겹","파","자","뽕","면","발"};
 		String[] question2 = {"건","제","검","박","우","빈","공","부","유","잔","상","든","훤","이","만","호"};
@@ -24,10 +23,8 @@ public class Answer {
 		collect[2] = question3;
 		collect[3] = question4;
 		List<String> list;
-		List<String> shuffList;
 		String trial;
 		String ans;
-//		quest.quest = answer;
 		
 		
 		while(true){
@@ -40,9 +37,8 @@ public class Answer {
 			
 			if(menu == 1){
 				pick =  quest.pick();
-				index = pick;
-				list = quest.shuffle(collect[index]);
-				ans = answer[index];
+				list = quest.shuffle(collect[pick]);
+				ans = answer[pick];
 				while(true){
 					System.out.println("┌─────────┐");		
 					for(int i = 0; i < list.size(); i++){
@@ -60,18 +56,20 @@ public class Answer {
 					Scanner scan2 = new Scanner(System.in);
 					trial = scan2.nextLine();
 					
-					if(trial.equals(answer[index])){
+					if(trial.equals(answer[pick])){
 						System.out.println("정답입니다.");
 						System.out.print("계속하시겠습니까? (y/n) : ");
 						trial = scan2.nextLine();
 						if(trial.equals("y")){
 							pick =  quest.pick();
-							index = pick;
-							list = quest.shuffle(collect[index]);
-							ans = answer[index];
+							list = quest.shuffle(collect[pick]);
+							ans = answer[pick];
 							continue;
 						}
-						else if(trial.equals("n"))break;
+						else if(trial.equals("n")){
+							System.out.println("<<메뉴로 이동합니다>>");
+							break;
+						}
 						else {
 							System.out.println("잘못 입력하셨습니다. 메뉴로 이동합니다.");
 							break;
