@@ -16,7 +16,7 @@ public class WordQuiz03 {
 		char arr[] = new char[16];
 
 		QGen quiz = new QGen();
-
+ 
 		while (allState) {
 			System.out.println("┌──────────────────┐");
 			System.out.println("│      M E N U     │");
