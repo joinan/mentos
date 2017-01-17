@@ -20,7 +20,7 @@ public class QGen {
 			arr[i] = qSentence.charAt(i);
 		}
 		qNum++;
-		System.out.println("qgenerator     "+Arrays.toString(arr));
+		//System.out.println("qgenerator     "+Arrays.toString(arr));
 		return arr;
 	}
 
@@ -36,7 +36,7 @@ public class QGen {
 			arrRandom[i] = arrRandom[seed];
 			arrRandom[seed] = temp;
 		}
-		System.out.println("qrandom     "+Arrays.toString(arrRandom));
+		//System.out.println("qrandom     "+Arrays.toString(arrRandom));
 		return arrRandom;
 	}
 }
