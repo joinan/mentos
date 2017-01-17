@@ -56,7 +56,7 @@ public class Answer {
 					Scanner scan2 = new Scanner(System.in);
 					trial = scan2.nextLine();
 					
-					if(trial.equals(answer[pick])){
+					if(trial.equals(ans)){
 						System.out.println("정답입니다.");
 						System.out.print("계속하시겠습니까? (y/n) : ");
 						trial = scan2.nextLine();
