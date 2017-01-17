@@ -13,12 +13,11 @@ public class Question {
 	String[] question6 = {"마","스","콜","두","용","테","고","링","축","역","프","수","양","야","말","승"};
 	String[] question7 = {"이","플","동","에","두","수","성","나","글","한","케","다","니","레","엘","티"};
 	String[] question8 = {"환","티","아","봉","마","콜","운","레","사","스","밀","다","수","붕","제","비"};
-	
 	String[] answer = {"곱창", "공유", "이명우", "치타", "유희상", "승마", "케이티", "제티"};
 	String[] hint = {"음식", "남자배우", "우리 반 친구", "동물","우리 반 친구","스포츠","기업","음료수"};
 	String[][] collect = new String[8][16];
 	int index;
-	List<String> list;
+	List<String> problem;
 	
 	public Question(){
 		collect[0] = question1;
@@ -29,21 +28,33 @@ public class Question {
 		collect[5] = question6;
 		collect[6] = question7;
 		collect[7] = question8;
+		index = 0;
+		problem = null;
 	}
 	
-	List<String> shuffle(int index){
-		list = Arrays.asList(this.collect[index]);
-		Collections.shuffle(list);
-		return list;
+	void shuffle(int index){
+		this.problem = Arrays.asList(this.collect[index]);
+		Collections.shuffle(this.problem);		
 	}
 	
-	int pick(){
-		index = (int) (Math.random()*8);
-		return index;
+	void pick(){
+		this.index = (int) (Math.random()*8);
+		shuffle(this.index);
 	}
 	
+	String getAnswer(){
+		return this.answer[this.index];
+	}
 	
+	String getHint(){
+		return this.hint[this.index];
+	}
 	
+	int getNum(){
+		return (this.index + 1);
+	}
 	
-	
+	String printProblem(){
+		return getNum() + "번 문제 : " + getHint();
+	}
 }

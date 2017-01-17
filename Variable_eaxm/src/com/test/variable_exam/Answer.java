@@ -1,6 +1,5 @@
 package com.test.variable_exam;
 
-import java.util.List;
 import java.util.Scanner;
 
 public class Answer {
@@ -8,12 +7,8 @@ public class Answer {
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
 		Question question = new Question();
-		int index;
-		int menu;
-		List<String> qlist;
+		int menu;		
 		String trial;
-		String ans;
-		String hint;
 
 		while(true){
 			System.out.println("┌──────────────────┐");
@@ -23,16 +18,13 @@ public class Answer {
 			System.out.println("└──────────────────┘");
 			menu = scan.nextInt();
 			if(menu == 1){
-				index =  question.pick();
-				qlist = question.shuffle(index);
-				ans = question.answer[index];
-				hint = question.hint[index];
+				question.pick();
 				while(true){
-					System.out.println((index + 1) + "번 문제 : " + hint);
+					System.out.println(question.printProblem());
 					System.out.println("┌─────────┐");		
-					for(int i = 0; i < qlist.size(); i++){
+					for(int i = 0; i < question.problem.size(); i++){
 						if(i % 4 == 0) System.out.print("│ ");
-						System.out.print(qlist.get(i));
+						System.out.print(question.problem.get(i));
 						System.out.print(" ");
 						if(i % 4 == 3) {
 							System.out.print("│");
@@ -43,15 +35,12 @@ public class Answer {
 					System.out.print("정답은? : ");
 					Scanner scan2 = new Scanner(System.in);
 					trial = scan2.nextLine();
-					if(trial.equals(ans)){
+					if(trial.equals(question.getAnswer())){
 						System.out.println("정답입니다!");
 						System.out.print("계속하시겠습니까? (y/n) : ");
 						trial = scan2.nextLine();
 						if(trial.equals("y")){
-							index =  question.pick();
-							qlist = question.shuffle(index);
-							ans = question.answer[index];
-							hint = question.hint[index];
+							question.pick();
 							continue;
 						}
 						else if(trial.equals("n")){
