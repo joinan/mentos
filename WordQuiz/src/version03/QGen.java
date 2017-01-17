@@ -1,7 +1,5 @@
 package version03;
 
-import java.util.Arrays;
-
 public class QGen {
 	String qSentence, qAns;
 	

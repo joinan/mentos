@@ -23,8 +23,7 @@ public class WordQuiz03 {
 			System.out.println("┌──────────────────┐");
 			System.out.println("│      M E N U     │");
 			System.out.println("│ 1.게임시작     	   │");
-			System.out.println("│ 2.문제생성  	   │");
-			System.out.println("│ 3.게임종료     	   │");
+			System.out.println("│ 2.게임종료     	   │");
 			System.out.println("└──────────────────┘");
 			menu = scan.nextInt();
 
@@ -60,12 +59,12 @@ public class WordQuiz03 {
 						System.out.println("메뉴로 돌아갑니다.");
 					}
 				}
-			} else if (menu == 2) {
+			} /*else if (menu == 2) {
 				System.out.println("문제를 입력하세요.");
 				quiz.qgenerator(qNum);
 				System.out.println("입력 완료.");
 				qNum++;
-			}else if (menu==3) {
+			}*/else if (menu==2) {
 				allState = false;
 			} 
 			else
