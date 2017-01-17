@@ -16,7 +16,7 @@ public class WordQuiz03 {
 		char arr[] = new char[16];
 
 		QGen quiz = new QGen();
- 
+
 		while (allState) {
 			System.out.println("┌──────────────────┐");
 			System.out.println("│      M E N U     │");
@@ -28,7 +28,7 @@ public class WordQuiz03 {
 			qState = true;
 
 			if (menu == 1) {
-				while(quiz.qList.size()!=0){
+				while (quiz.qList.size() != 0) {
 					while (qState) {
 						/*
 						 * arr = quiz.qgenerator(qNum); quiz.qRandom(arr);
@@ -58,8 +58,8 @@ public class WordQuiz03 {
 								System.out.println("틀렸습니다. 정답을 입력하세요.");
 							}
 						}
-						if(quiz.qList.size()==0){
-							qState=false;
+						if (quiz.qList.size() == 0) {
+							qState = false;
 							break;
 						}
 						System.out.println("계속 하시겠습니까?(Y/N)");
@@ -76,8 +76,7 @@ public class WordQuiz03 {
 				System.out.println("메뉴로 돌아갑니다.");
 
 			} else if (menu == 2) {
-				quiz.inputQ();
-
+				inputM(quiz);
 			} else if (menu == 3) {
 				allState = false;
 			} else
@@ -85,5 +84,24 @@ public class WordQuiz03 {
 
 		}
 		System.out.println("게임을 종료합니다.");
+	}
+
+	static void inputM(QGen quiz) {
+		Scanner sc = new Scanner(System.in);
+		char[] arr = new char[16];
+
+		String qEaxm, qSentence, qAns;
+		System.out.println("문제 입력");
+		qEaxm = sc.next();
+		System.out.println("보기 입력");
+		for (int i = 0; i < arr.length; i++) {
+			System.out.println((i + 1) + "번째 글자 입력");
+			arr[i] = sc.next().charAt(0);
+		}
+		qSentence = new String(arr);
+		System.out.println("답 입력");
+		qAns = sc.next();
+		quiz.inputQ(qEaxm, qSentence, qAns);
+
 	}
 }

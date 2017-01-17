@@ -56,21 +56,9 @@ public class QGen {
 		return arr;
 	}
 
-	void inputQ() {
-		char[] arr = new char[16];
-		System.out.println("문제 입력");
-		qEaxm = sc.next();
-		qinfoList.add(qEaxm);
-		System.out.println("보기 입력");
-		for (int i = 0; i < arr.length; i++) {
-			System.out.println((i + 1) + "번째 글자 입력");
-			arr[i] = sc.next().charAt(0);
-		}
-		qSentence = new String(arr);
-
+	void inputQ(String qExam, String qSentence, String qAns) {
+		qinfoList.add(qExam);
 		qList.add(qSentence);
-		System.out.println("답 입력");
-		qAns = sc.next();
 		ansList.add(qAns);
 	}
 
