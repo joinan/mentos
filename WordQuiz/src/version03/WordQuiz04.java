@@ -23,7 +23,7 @@ public class WordQuiz04{
 			System.out.println(MENU);
 			menu = scan.nextInt();
 			qState = true;
-
+ 
 			if (menu == 1) {
 				while (qState) {
 					/*
