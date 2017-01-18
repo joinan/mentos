@@ -3,9 +3,9 @@ package com.join.quiz3;
 import java.util.Scanner;
 
 public class Quiz3 {
-	static final String printGameover;
+	static final String PRINT_GAMEOVER;
 	static {
-		printGameover="☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★\n"
+		PRINT_GAMEOVER="☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★\n"
 				+"★축하합니다. 모든 문제를 맞췄습니다☆\n"
 				+"☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★";
 	}
@@ -80,7 +80,7 @@ public class Quiz3 {
 					else
 						state++;
 				}
-				System.out.println(printGameover);
+				System.out.println(PRINT_GAMEOVER);
 				
 				while(true){
 					System.out.println("게임을 다시 시작하시겠습니까?(y/n)");
@@ -122,7 +122,7 @@ public class Quiz3 {
 					else
 						state++;
 				}
-				System.out.println(printGameover);
+				System.out.println(PRINT_GAMEOVER);
 				
 				while(true){
 					System.out.println("게임을 다시 시작하시겠습니까?(y/n)");
