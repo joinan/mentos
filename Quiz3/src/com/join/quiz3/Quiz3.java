@@ -140,7 +140,7 @@ public class Quiz3 {
 				break;
 			}
 			else {
-				System.out.println("잘못 입력했습니다. 다시입력하세요.");
+				System.out.println("잘못 입력했습니다. 다시입력하세요."); 
 				continue;
 			}
 		}
