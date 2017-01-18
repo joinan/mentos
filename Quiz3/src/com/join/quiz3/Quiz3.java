@@ -16,6 +16,7 @@ public class Quiz3 {
 		int quizNum=6;
 		int quizNum5x5 = 2;
 		Question []question;
+		Question []selectQuestion;
 		question=  new Question[quizNum];
 		question[0] = new Question();
 		question[0].setKeyword("음식");
@@ -51,54 +52,17 @@ public class Quiz3 {
 			state=1;
 			menu = Integer.valueOf(scan.nextLine());
 			if (menu == 1) {
+				printMenu2();
+				int menu2 = Integer.valueOf(scan.nextLine());
+				if(menu2 ==1)
+					selectQuestion = question;
+				else
+					selectQuestion = question5x5;
 				while(true) {
-					System.out.println(question[state-1].getQuestion(state));
-					System.out.println(question[state-1].getProblem());
+					System.out.println(selectQuestion[state-1].getQuestion(state));
+					System.out.println(selectQuestion[state-1].getProblem());		
 					while (true) {
-						if (question[state-1].isAnswer(scan.nextLine())){
-							System.out.println("정답입니다!!");
-							break;
-						}
-						else{
-							System.out.println("틀렸습니다. 정답을 입력하세요.");
-						}
-					}
-					while(true) {
-						
-						System.out.println("게임을 계속하시겠습니까?(y/n)");
-						String input = scan.nextLine();
-						if(input.equals("y")) 
-							break;
-						else if(input.equals("n")) {
-							System.out.println("게임을 종료합니다.");
-							break Main;
-						}else 
-							System.out.println("잘못 입력했습니다. 다시입력하시오.");
-					}
-					if(state==quizNum5x5)
-						break;
-					else
-						state++;
-				}
-				System.out.println(PRINT_GAMEOVER);
-				
-				while(true){
-					System.out.println("게임을 다시 시작하시겠습니까?(y/n)");
-					String input2 = scan.nextLine();
-					if(input2.equals("y"))
-						continue Main;
-					else if(input2.equals("n")) {
-						System.out.println("게임을 종료합니다.");
-						break Main;
-					}else
-						System.out.println("잘못 입력했습니다. 다시입력하세요.");
-				}
-			} else if(menu ==2) {
-				while(true) {
-					System.out.println(question5x5[state-1].getQuestion(state));
-					System.out.println(question5x5[state-1].getProblem());		
-					while (true) {
-						if (question5x5[state-1].isAnswer(scan.nextLine())){
+						if (selectQuestion[state-1].isAnswer(scan.nextLine())){
 							System.out.println("정답입니다!!");
 							break;
 						}
@@ -135,7 +99,7 @@ public class Quiz3 {
 					}else
 						System.out.println("잘못 입력했습니다. 다시입력하세요.");
 				}
-			} else if (menu == 3) {
+			} else if (menu == 2) {
 				System.out.println("게임을 종료합니다.");
 				break;
 			}
@@ -149,9 +113,15 @@ public class Quiz3 {
 	public static void printMenu(){
 		System.out.println("┌──────────────────┐");
 		System.out.println("│      M E N U     │");
-		System.out.println("│ 1.게임시작(4x4) 	   │");
-		System.out.println("│ 2.게임시작(5x5) 	   │");
-		System.out.println("│ 3.게임종료     	   │");
+		System.out.println("│ 1.게임시작   	   │");
+		System.out.println("│ 2.게임종료   	   │");
+		System.out.println("└──────────────────┘");
+	}
+	public static void printMenu2(){
+		System.out.println("┌──────────────────┐");
+		System.out.println("│      M E N U     │");
+		System.out.println("│ 1.4x4     	   │");
+		System.out.println("│ 2.5x5     	   │");
 		System.out.println("└──────────────────┘");
 	}
 }
