@@ -45,7 +45,7 @@ public class Quiz3 {
 		question5x5 = new Question5x5[quizNum5x5];
 		question5x5[0] = new Question5x5("우리반 사람들 중에 한명", "강동훈", "강동훈곽다동근서준아인민동박중지찬초방은양성희상찬");
 		question5x5[1] = new Question5x5("우리반 사람들 중에 한명", "김지혜", "동훈김지혜준동성건연민호중균지용찬준초롱성장원아리");
-
+ 
 		Main : while(true) {
 			printMenu();
 			state=1;
