@@ -23,7 +23,7 @@ public class QGen02 extends QGen{
 		setaCnt(0);
 		setrCnt(0);
 		
-		setCnt(1);
+		setCnt(1); 
 	}
 	private int rCnt; private int aCnt;
 	

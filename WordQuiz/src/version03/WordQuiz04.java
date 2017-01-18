@@ -15,7 +15,7 @@ public class WordQuiz04{
 		int qNum = 1;
 
 
-		QGen02 quiz = new QGen02();		
+		QGen02 quiz = new QGen02();		 
 
 		while (allState) {
 			System.out.println("┌──────────────────┐");
