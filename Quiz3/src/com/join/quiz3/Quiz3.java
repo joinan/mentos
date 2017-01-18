@@ -3,11 +3,16 @@ package com.join.quiz3;
 import java.util.Scanner;
 
 public class Quiz3 {
+	static final String printGameover;
+	static {
+		printGameover="☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★\n"
+				+"★축하합니다. 모든 문제를 맞췄습니다☆\n"
+				+"☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★";
+	}
 	public static void main(String[] arg) {
 		Scanner scan = new Scanner(System.in);
 		int menu;
 		int state=1;
-		
 		int quizNum=6;
 		Question []question;
 		question=  new Question[quizNum];
@@ -68,7 +73,7 @@ public class Quiz3 {
 					else
 						state++;
 				}
-				printGameover();
+				System.out.println(printGameover);
 				
 				while(true){
 					System.out.println("게임을 다시 시작하시겠습니까?(y/n)");
@@ -98,11 +103,4 @@ public class Quiz3 {
 		System.out.println("│ 2.게임종료     	   │");
 		System.out.println("└──────────────────┘");
 	}
-	
-	public static void printGameover(){
-		System.out.println("☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★");
-		System.out.println("★축하합니다. 모든 문제를 맞췄습니다☆");
-		System.out.println("☆★☆★☆★☆★☆★☆★☆★☆★☆★☆★");
-	}
-
 }

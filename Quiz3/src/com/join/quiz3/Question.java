@@ -7,26 +7,20 @@ public class Question {
 	public String problem;
 	
 	public void setProblem(){
-		problem="";
+		problem="┌───────────┐\n│";
 		char []chProblem = new char[16];
 		char []shProblem = new char[16];
-		String []strProblem = new String[6];
-		
-		for(int i=1; i<5; i++)
-			strProblem[i]="│";
 		for(int i=0;i<chProblem.length;i++)
 			chProblem[i]=questionSource.charAt(i);
 		shProblem = shuffle(chProblem);
-		strProblem[0]=new String("┌───────────┐");
-		for (int i = 0; i < 16; i++) {
-			strProblem[(i%4)+1] = new String(strProblem[(i%4)+1] + " " + shProblem[i]);
+		for(int i=0;i<16;i++) {
+			if(i==shProblem.length-1)
+				problem += " " + shProblem[i] +" │\n└───────────┘";
+			else if((i+1)%4==0 && i!=0)
+				problem += " " + shProblem[i] +" │\n│";
+			else
+				problem += " " + shProblem[i];
 		}
-		for(int i=1; i<5; i++)
-			strProblem[i]+=" │";
-		strProblem[5]=new String("└───────────┘");
-		for(int i=0;i<6;i++) {
-			problem += strProblem[i]+"\n";
-		}	
 	}
 
 	public void setQestionSource(String qestionSource) {
