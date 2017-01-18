@@ -2,14 +2,11 @@ package version03;
 
 import java.util.Scanner;
 
-public class WordQuiz04 extends QGen{
-	public WordQuiz04() {
-		super(); // 부모클래스의 생성자
-	}
+public class WordQuiz04{
 	static Scanner scan = new Scanner(System.in);
-	
+	static int menu;
+
 	public static void main(String[] args) {
-		int menu;
 		int flag = 0;
 		boolean allState = true;
 		boolean qState = true;
@@ -18,7 +15,7 @@ public class WordQuiz04 extends QGen{
 		int qNum = 1;
 
 
-		QGen quiz = new QGen();		
+		QGen02 quiz = new QGen02();		
 
 		while (allState) {
 			System.out.println("┌──────────────────┐");
@@ -60,13 +57,20 @@ public class WordQuiz04 extends QGen{
 						while (flag < 1) {
 							ans = scan.next();
 							if (ans.equals(quiz.ansList.get(qNum))) {
+								quiz.setaCnt(quiz.getaCnt()+1);
+								quiz.setrCnt(quiz.getrCnt()+1);
+								
+								
 								System.out.println("정답입니다.");
+								System.out.println("맞춘 문제 : "+quiz.getrCnt()+", 틀린 문제 : "+quiz.getaCnt());
+								System.out.println("정답률 : "+(int)(double)((quiz.getrCnt()*100)/quiz.getaCnt())+"%");
 								quiz.removeQ(qNum);
 								quiz.setCnt(quiz.getCnt()+1);
 								flag++;
 
 							} else {
 								System.out.println("틀렸습니다. 정답을 입력하세요.");
+								quiz.setaCnt(quiz.getaCnt()+1);
 							}
 						}
 						flag = 0;
@@ -77,7 +81,7 @@ public class WordQuiz04 extends QGen{
 						qState = false;
 						break;
 					}
-					System.out.println("계속 하시겠습니까?(Y/N)");
+					System.out.println("계속 하시겠습니까?(ㅇ/ㄴ)");
 					select = scan.next();
 					flag = 0;
 					if (select.equals("ㄴ")) {
