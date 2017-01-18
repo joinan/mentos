@@ -6,40 +6,33 @@ public class Answer {
 
 	public static void main(String[] args) {
 		Scanner scan = new Scanner(System.in);
-		Question question = new Question();
-		String menu;		
-		String trial;
+		SelectedQuestion sq = new SelectedQuestion();
+		String select;	
 
 		while(true){
-			System.out.println("┌──────────────────┐");
-			System.out.println("│      M E N U     │");
-			System.out.println("│ 1.게임시작     	   │");
-			System.out.println("│ 2.게임종료     	   │");
-			System.out.println("└──────────────────┘");
-			menu = scan.nextLine();
-			if(menu.equals("1")){
-				question.pick();
+			System.out.println(sq.menu);
+			select = scan.nextLine();
+			if(select.equals("1")){
 				while(true){
-					System.out.println(question.printProblem());
+					System.out.println(sq.describe);
 					System.out.println("┌─────────┐");
-					for(int i = 0; i < question.problem.size(); i++){
+					for(int i = 0; i < sq.problem.size(); i++){
 						if(i % 4 == 0) System.out.print("│ ");
-						System.out.print(question.problem.get(i) + " ");
+						System.out.print(sq.problem.get(i) + " ");
 						if(i % 4 == 3) System.out.print("│\n");
 					}
 					System.out.println("└─────────┘");
 					System.out.print("정답은? : ");
-					Scanner scan2 = new Scanner(System.in);
-					trial = scan2.nextLine();
-					if(trial.equals(question.getAnswer())){
+					select = scan.nextLine();
+					if(select.equals(sq.answer)){
 						System.out.println("정답입니다!");
 						System.out.print("계속하시겠습니까? (y/n) : ");
-						trial = scan2.nextLine();
-						if(trial.equals("y")){
-							question.pick();
+						select = scan.nextLine();
+						if(select.equals("y")){
+							sq = new SelectedQuestion();
 							continue;
 						}
-						else if(trial.equals("n")){
+						else if(select.equals("n")){
 							System.out.println("<<메뉴로 이동합니다>>");
 							break;
 						}
@@ -48,18 +41,18 @@ public class Answer {
 							break;
 						}
 					}
-					scan2.close();
 				}
 			}
-			else if(menu.equals("2")){
-				System.out.println("<<게임 종료>>");
+			else if(select.equals("2")){
+				System.out.println("<<게임 종료>>");				
+				scan.close();
 				break;
 			}
 			else{
 				System.out.println("잘못 입력하셨습니다. 게임을 종료합니다.");
+				scan.close();
 				break;
 			}
-			scan.close();
 		}
 	}
 	
