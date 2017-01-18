@@ -5,10 +5,12 @@ public class Question5x5 extends Question {
 		this.keyword = keyword;
 		this.answer = answer;
 		this.questionSource = questionSource;
+		setProblem();
 	}
 	
 	@Override
 	public void setProblem(){
+		problem="┌─────────────┐\n│";
 		char []chProblem = new char[25];
 		char []shProblem = new char[25];
 		for(int i=0;i<chProblem.length;i++)
@@ -16,7 +18,7 @@ public class Question5x5 extends Question {
 		shProblem = shuffle(chProblem);
 		for(int i=0;i<25;i++) {
 			if(i==shProblem.length-1)
-				problem += " " + shProblem[i] +" │\n└───────────┘";
+				problem += " " + shProblem[i] +" │\n└─────────────┘";
 			else if((i+1)%5==0 && i!=0)
 				problem += " " + shProblem[i] +" │\n│";
 			else
@@ -36,4 +38,5 @@ public class Question5x5 extends Question {
 		}
 		return chProblem;
 	}
+	
 }
