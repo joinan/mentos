@@ -2,9 +2,12 @@ package version03;
 
 import java.util.Scanner;
 
-public class WordQuiz03 {
+public class WordQuiz04 extends QGen{
+	public WordQuiz04() {
+		super(); // 부모클래스의 생성자
+	}
 	static Scanner scan = new Scanner(System.in);
-		
+	
 	public static void main(String[] args) {
 		int menu;
 		int flag = 0;
@@ -15,9 +18,7 @@ public class WordQuiz03 {
 		int qNum = 1;
 
 
-		QGen quiz = new QGen();
-		
-		char arr[] = new char[quiz.getNumofEaxm()];
+		QGen quiz = new QGen();		
 
 		while (allState) {
 			System.out.println("┌──────────────────┐");
@@ -34,20 +35,27 @@ public class WordQuiz03 {
 					/*
 					 * arr = quiz.qgenerator(qNum); quiz.qRandom(arr);
 					 */
+					char arr[] = new char[quiz.qinfoList.size()];
+
 					if (quiz.qList.size() != 0) {
 
 						qNum = (int) (Math.random() * quiz.qinfoList.size());
-
+						
+						int n=quiz.qList.get(qNum).length();
+						quiz.setNumofEaxm(n);
+						int sqrtN=(int)Math.sqrt(n);
+						
 						arr = quiz.qgen(quiz.qList.get(qNum));
 						arr = quiz.qRandom(arr);
+												
 						System.out.println(quiz.getCnt() + " 번 문제 : " + quiz.qinfoList.get(qNum));
-						System.out.println("┌───────┐");
+						System.out.println("──────────────────");
+						//System.out.println();
 						for (int i = 0; i < arr.length; i++) {
-							System.out.print(" " + arr[i]);
-							if (i % 4 == 3)
+							System.out.print("  " + arr[i]);
+							if (i % sqrtN == sqrtN-1)
 								System.out.println();
 						}
-						System.out.println("└───────┘");
 
 						while (flag < 1) {
 							ans = scan.next();
@@ -91,9 +99,13 @@ public class WordQuiz03 {
 	}
 
 	static void inputM(QGen quiz) {
-		char[] arr = new char[quiz.getNumofEaxm()];
 
 		String qEaxm, qSentence, qAns;
+		
+		System.out.println("보기 개수를 입력하시오");
+		int nEaxm=scan.nextInt();
+		char[] arr = new char[nEaxm];
+
 		System.out.println("문제 입력");
 		qEaxm = scan.next();
 		System.out.println("보기 입력");

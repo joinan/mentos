@@ -5,11 +5,27 @@ import java.util.Scanner;
 
 public class QGen {
 
+	private int cnt, numofEaxm;
+		
+	public int getNumofEaxm() {
+		return numofEaxm;
+	}
+
+	public void setNumofEaxm(int numofEaxm) {
+		this.numofEaxm = numofEaxm;
+	}
+
+	public int getCnt() {
+		return cnt;
+	}
+
+	public void setCnt(int cnt) {
+		this.cnt = cnt;
+	}
+
 	Scanner sc = new Scanner(System.in);
 	String qSentence, qAns, qEaxm;
-	String inputSentence[] = new String[5];
-	String inputAns[] = new String[5];
-
+	
 	ArrayList<String> qinfoList = new ArrayList<String>();
 	ArrayList<String> qList = new ArrayList<String>();
 	ArrayList<String> ansList = new ArrayList<String>();
@@ -29,15 +45,17 @@ public class QGen {
 		qList.add("지원주명우수동환박성연인진정이롱");
 		qList.add("건제검박우빈공부유잔상든훤이만호");
 		qList.add("코염슴치호끼수지고랑원린가릴타문");
+		setCnt(1);
+		numofEaxm=16;
 	}
 
 	char[] qRandom(char[] arrRandom) {
-		int[] arr = new int[16];
+		int[] arr = new int[numofEaxm];
 		int seed;
 		char temp;
 
 		for (int i = 0; i < arr.length; i++) {
-			seed = (int) (Math.random() * 15) + 1;
+			seed = (int) (Math.random() * (numofEaxm-1)) + 1;
 			// System.out.println(seed);
 			temp = arrRandom[i];
 			arrRandom[i] = arrRandom[seed];
@@ -48,7 +66,7 @@ public class QGen {
 	}
 
 	char[] qgen(String str) {
-		char[] arr = new char[16];
+		char[] arr = new char[numofEaxm];
 		for (int i = 0; i < arr.length; i++) {
 			arr[i] = str.charAt(i);
 		}
