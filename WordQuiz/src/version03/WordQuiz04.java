@@ -5,6 +5,8 @@ import java.util.Scanner;
 public class WordQuiz04{
 	static Scanner scan = new Scanner(System.in);
 	static int menu;
+	static final String MENU="┌──────────────────┐\n│      M E N U     │\n│ 1.게임시작     	   │\n│ 2.문제생성  	   │\n"
+			+ "│ 3.게임종료     	   │\n└──────────────────┘";
 
 	public static void main(String[] args) {
 		int flag = 0;
@@ -18,12 +20,7 @@ public class WordQuiz04{
 		QGen02 quiz = new QGen02();		 
 
 		while (allState) {
-			System.out.println("┌──────────────────┐");
-			System.out.println("│      M E N U     │");
-			System.out.println("│ 1.게임시작     	   │");
-			System.out.println("│ 2.문제생성  	   │");
-			System.out.println("│ 3.게임종료     	   │");
-			System.out.println("└──────────────────┘");
+			System.out.println(MENU);
 			menu = scan.nextInt();
 			qState = true;
 
