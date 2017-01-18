@@ -26,7 +26,7 @@ public class WordQuiz04{
  
 			if (menu == 1) {
 				while (qState) {
-					/*
+					/* 
 					 * arr = quiz.qgenerator(qNum); quiz.qRandom(arr);
 					 */
 					char arr[] = new char[quiz.qinfoList.size()];
