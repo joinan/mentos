@@ -1,13 +1,12 @@
 package com.join.quiz3;
 
-public class Question5x5 extends Question implements FiveByFive{
-	public Question5x5(String keyword, String answer, String questionSource){
+public class QuestionDefault5x5 extends Question implements FiveByFive{
+	public QuestionDefault5x5(String keyword, String answer, String questionSource){
 		this.keyword = keyword;
 		this.answer = answer;
 		this.questionSource = questionSource;
 		setProblem();
 	}
-	
 	@Override
 	public void setProblem(){
 		problem="┌─────────────┐\n│";
@@ -38,5 +37,4 @@ public class Question5x5 extends Question implements FiveByFive{
 		}
 		return chProblem;
 	}
-	
 }

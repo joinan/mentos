@@ -1,27 +1,12 @@
 package com.join.quiz3;
 
-public class Question {
+public abstract class Question {
 	public String keyword;
 	public String answer;
 	public String questionSource;
 	public String problem;
 	
-	public void setProblem(){
-		problem="┌───────────┐\n│";
-		char []chProblem = new char[16];
-		char []shProblem = new char[16];
-		for(int i=0;i<chProblem.length;i++)
-			chProblem[i]=questionSource.charAt(i);
-		shProblem = shuffle(chProblem);
-		for(int i=0;i<16;i++) {
-			if(i==shProblem.length-1)
-				problem += " " + shProblem[i] +" │\n└───────────┘";
-			else if((i+1)%4==0 && i!=0)
-				problem += " " + shProblem[i] +" │\n│";
-			else
-				problem += " " + shProblem[i];
-		}
-	}
+	abstract void setProblem();
 
 	public void setQestionSource(String qestionSource) {
 		this.questionSource = qestionSource;
@@ -55,16 +40,6 @@ public class Question {
 			return false;
 	}
 	
-	public char[] shuffle(char[] chProblem){
-		char temp;
-		int randomInt;
-		for(int i=0;i<chProblem.length;i++){
-			randomInt=(int)(Math.random()*15);
-			temp = chProblem[i];
-			chProblem[i] = chProblem[randomInt];
-			chProblem[randomInt] = temp;
-		}
-		return chProblem;
-	}
+	abstract char[] shuffle(char[] chProblem);
 	
 }
