@@ -1,0 +1,134 @@
+doctype html
+html(lang='ko')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='')
+    meta(name='author', content='')
+    title MENTal Of uS
+    // Bootstrap Core CSS
+    link(href='stylesheets/bootstrap.min.css', rel='stylesheet')
+    // Custom CSS
+    link(href='stylesheets/modern-business.css', rel='stylesheet')
+    // Custom Fonts
+    link(href='font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+    // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
+    // WARNING: Respond.js doesn't work if you view the page via file://
+    //if lt IE 9
+      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    // All the files that are required
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+    link(href='http://fonts.googleapis.com/css?family=Varela+Round', rel='stylesheet', type='text/css')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+
+  body
+    // Navigation
+    nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+      .container
+        // Brand and toggle get grouped for better mobile display
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/main') Mentos
+        // Collect the nav links, forms, and other content for toggling
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href='/board') 내 노트
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | 추천 
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='/movie') 영화 추천
+                li
+                  a(href='/food') 맛집 추천
+                li
+                  a(href='/center') 상담소
+            li
+              a(href='/mypage') 마이페이지
+        // /.navbar-collapse
+      // /.container
+    // Header Carousel
+    header#myCarousel.carousel.slide
+      // Indicators
+      ol.carousel-indicators
+        li.active(data-target='#myCarousel', data-slide-to='0')
+        li(data-target='#myCarousel', data-slide-to='1')
+        li(data-target='#myCarousel', data-slide-to='2')
+      // Wrapper for slides
+      .carousel-inner
+        .item.active
+          .fill(style="background-image:url('http://placehold.it/1900x1080&text=MENTal Of uS');")
+      // Controls
+    // Page Content
+    .container
+      // Marketing Icons Section
+      .row
+        .col-lg-12
+          h1.page-header
+            | 지친 현대인들을 위한 멘탈 클리닉
+        
+      // /.row
+      hr
+      // Where all the magic happens
+      // REGISTRATION FORM
+      .text-center(style='padding:50px 0')
+        .logo 계정 등록
+        // Main Form
+        .login-form-1
+          form#register-form.text-left
+            .login-form-main-message
+            .main-login-form
+              .login-group
+                .form-group
+                  label.sr-only(for='reg_username') Email address
+                  input#reg_username.form-control(type='text', name='reg_username', placeholder='이름')
+                .form-group
+                  label.sr-only(for='reg_password') Password
+                  input#reg_password.form-control(type='password', name='reg_password', placeholder='비밀번호')
+                .form-group
+                  label.sr-only(for='reg_password_confirm') Password Confirm
+                  input#reg_password_confirm.form-control(type='password', name='reg_password_confirm', placeholder='비밀번호 확인')
+                .form-group
+                  label.sr-only(for='reg_email') Email
+                  input#reg_email.form-control(type='text', name='reg_email', placeholder='이메일')
+                .form-group
+                  label.sr-only(for='reg_fullname') Full Name
+                  input#reg_fullname.form-control(type='text', name='reg_fullname', placeholder='닉네임')
+                .form-group.login-group-checkbox
+                  input#male(type='radio', name='reg_gender', placeholder='username')
+                  label(for='male') 남성
+                  input#female(type='radio', name='reg_gender', placeholder='username')
+                  label(for='female') 여성
+                
+              button.login-button(type='submit' href='/main')
+                i.fa.fa-chevron-right
+            .etc-login-form
+              p
+                | 계정 생성을 하셨습니까? 
+                a(href='/login') 여기를 눌러서 로그인 하세요
+        // end:Main Form
+      hr
+      // Footer
+      footer
+        .row
+          .col-lg-12
+            p Copyright © Mentos 2017
+    // /.container
+    // jQuery
+    script(src='javascripts/jquery.js')
+    // Bootstrap Core JavaScript
+    script(src='javascripts/bootstrap.min.js')
+    // Script to Activate the Carousel
+    script.
+      $('.carousel').carousel({
+      interval: 5000 //changes the speed
+      })
