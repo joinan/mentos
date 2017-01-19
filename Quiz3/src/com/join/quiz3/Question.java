@@ -7,7 +7,8 @@ public abstract class Question {
 	public String problem;
 	
 	abstract void setProblem();
-
+	abstract char[] shuffle(char[] chProblem);
+	
 	public void setQestionSource(String qestionSource) {
 		this.questionSource = qestionSource;
 		setProblem();
@@ -40,6 +41,6 @@ public abstract class Question {
 			return false;
 	}
 	
-	abstract char[] shuffle(char[] chProblem);
+	
 	
 }
