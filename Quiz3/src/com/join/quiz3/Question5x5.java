@@ -1,6 +1,6 @@
 package com.join.quiz3;
 
-public class Question5x5 extends Question {
+public class Question5x5 extends Question implements FiveByFive{
 	public Question5x5(String keyword, String answer, String questionSource){
 		this.keyword = keyword;
 		this.answer = answer;

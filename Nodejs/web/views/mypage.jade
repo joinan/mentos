@@ -1,0 +1,111 @@
+doctype html
+html(lang='ko')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='')
+    meta(name='author', content='')
+    title MENTal Of uS
+    // Bootstrap Core CSS
+    link(href='stylesheets/bootstrap.min.css', rel='stylesheet')
+    // Custom CSS
+    link(href='stylesheets/modern-business.css', rel='stylesheet')
+    // Custom Fonts
+    link(href='font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+    // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
+    // WARNING: Respond.js doesn't work if you view the page via file://
+    //if lt IE 9
+      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+  body
+    // Navigation
+    nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+      .container
+        // Brand and toggle get grouped for better mobile display
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/main') Mentos
+        // Collect the nav links, forms, and other content for toggling
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href='/board') 내 노트
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | 추천 
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='/movie') 영화 추천
+                li
+                  a(href='/food') 맛집 추천
+                li
+                  a(href='/center') 상담소
+            li.active
+              a(href='/mypage') 마이페이지
+        // /.navbar-collapse
+      // /.container
+    // Page Content
+    .container
+      // Page Heading/Breadcrumbs
+      .row
+        .col-lg-12
+          h1.page-header
+            | 마이페이지
+      // /.row
+      // The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/
+      .row
+        .col-md-3.col-sm-6
+          .panel.panel-default.text-center
+            .panel-heading
+              span.fa-stack.fa-5x
+                i.fa.fa-circle.fa-stack-2x.text-primary
+                i.fa.fa-tree.fa-stack-1x.fa-inverse
+            .panel-body
+              h4 내 정보수정
+              a.btn.btn-primary(href='#') 바로가기
+        .col-md-3.col-sm-6
+          .panel.panel-default.text-center
+            .panel-heading
+              span.fa-stack.fa-5x
+                i.fa.fa-circle.fa-stack-2x.text-primary
+                i.fa.fa-car.fa-stack-1x.fa-inverse
+            .panel-body
+              h4 내 감정분석
+              a.btn.btn-primary(href='#') 바로가기
+        .col-md-3.col-sm-6
+          .panel.panel-default.text-center
+            .panel-heading
+              span.fa-stack.fa-5x
+                i.fa.fa-circle.fa-stack-2x.text-primary
+                i.fa.fa-support.fa-stack-1x.fa-inverse
+            .panel-body
+              h4 상담하기
+              a.btn.btn-primary(href='#') 바로가기
+        .col-md-3.col-sm-6
+          .panel.panel-default.text-center
+            .panel-heading
+              span.fa-stack.fa-5x
+                i.fa.fa-circle.fa-stack-2x.text-primary
+                i.fa.fa-database.fa-stack-1x.fa-inverse
+            .panel-body
+              h4 회원탈퇴
+              a.btn.btn-primary(href='#') 바로가기
+      hr
+      // Footer
+      footer
+        .row
+          .col-lg-12
+            p Copyright © Mentos 2017
+    // /.container
+    // jQuery
+    script(src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js')
+    script(src='http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/bootstrap.min.js')
+    script(src='javascript/jquery.js')
+    // Bootstrap Core JavaScript
+    script(src='javascript/bootstrap.min.js')
