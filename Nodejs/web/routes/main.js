@@ -1,9 +1,12 @@
-var express = require('express');
-var router = express.Router();
+module.exports = function(passport, app) {
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('main', { title: 'Main' });
-});
+	var express = require('express');
+	var router = express.Router();
 
-module.exports = router;
+	app.use(passport.session());
+	/* GET home page. */
+	router.get('/', function(req, res, next) {
+		res.render('main');
+	});
+	return router;
+}
