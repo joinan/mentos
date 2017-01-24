@@ -12,52 +12,48 @@ module.exports = function(passport, conn){
 	  res.render('login');
 	});
 
-	// 다른 방법
-	// router.post('/login', function(req, res, next) {
-	// 	passport.authenticate('local', function(err, user, info) {
-	// 		if (err) { return next(err); }
-	// 	    if (!user) { return res.redirect('/'); }
-
-	// 	    // req / res held in closure
-	// 	    req.logIn(user, function(err) {
-	// 	    	if (err) { return next(err); }
-	// 	    });
-	// 	})(req, res, next);
-	// 	res.render('main');
-	// });
-
-	// 기본 방법
-	// router.post('/login',
-	// 	passport.authenticate(
-	// 		'local',
-	// 		{
-	// 			successRedirect	: '/main',
-	// 			failureRedirect	: '/login',
-	// 			failureFlash	: false 
-	// 		}
-	// 	)
-	// );
+	router.get('/loginfail', function(req, res, next) {
+	  res.render('loginfail');
+	});
 
 	router.post('/login',
     	passport.authenticate(
     		'local',{
-    			failureRedirect: '/login',
+    			failureRedirect: '/loginfail',
     			failureFlash: true
     		}
     	),
 	    function(req, res) {
-	    	console.log('로그인 페이지 입니다 객체는 :',req.user);
 	    	req.session.user = req.user;
-	    	console.log('로그인 페이지 입니다 세션 객체는 :',req.session.user);
 	        res.redirect('main');
     	}
     );
 
-
-
 	router.get('/signin', function(req, res){
 		res.render('signin');
 	});
+
+	router.post('/signin', function(req, res){
+    	var user = {
+        	c_id:req.body.reg_id,
+        	c_pw:req.body.reg_password,
+        	c_name:req.body.reg_name
+        };
+      	var sql = 'INSERT INTO client_info SET ?';
+      	conn.query(sql, user, function(err, results){
+        	if(err){
+          		if(err.code == 'ER_DUP_ENTRY')
+          			res.redirect('signinfail_dup');
+        	} else {
+          		res.redirect('login');
+        	}
+      	});
+    });
+
+    router.get('/signinfail_dup', function(req, res, next) {
+	  res.render('signinfail_dup');
+	});
+
 
 	router.get('/findpw', function(req, res){
 		res.render('findpw');

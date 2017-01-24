@@ -47,14 +47,11 @@ app.use(session({
 // Passport 설정
 // serializeUser : 세션에 처음 접속할 때 실행
 passport.serializeUser(function(user, done) { // user객체를 받아서
-	console.log('serializeUser', user); // 콘솔로그 찍어주고
-  console.log('유저에 아이디 값은', user.c_id);
     done(null, user.c_id); // user객체를 세션에 보낸다.
 });
 
 // deserializeUser : 세션에 재차 접속할 때 실행
 passport.deserializeUser(function(id, done) { // id값을 받아서
-	console.log('deserializeUser', user); // 콘솔로그 찍어주고
     var sql = 'SELECT * FROM client_info WHERE c_id=?'; // sql문 생성해서
     conn.query(sql, [id], function(err, results){ // 결과를 results로 받고
     	var user = results[0]; // user 객체로 결과를 받는다
@@ -76,12 +73,8 @@ passport.use(new LocalStrategy( // 로컬에서 로그인 처리하기 위한 �
        		if(err){ // 에러가 있으면
           		return done('There is no user.'); // db에서 id를 찾을 수 없음
         	}
-          console.log('여기는 아직 App에 passport LocalStrategy처리중입니다');
-          console.log('결과값은 : '+ results +' 입니다.');
         	var user = results[0]; // user객체에 결과값을 넣고
-          console.log('유저에 넣은 값은 : '+user+' 입니다.');
         	if(pw === user.c_pw){ // 받은 pw가 db의 c_pw와 같으면
-        		console.log('LocalStrategy', user); // 콘솔로그 찍고
             	done(null, user); // user객체를 성공시 사용
           	} else {
             	done(null, false); // 실패시 아무것도 하지 않는다.
@@ -91,9 +84,6 @@ passport.use(new LocalStrategy( // 로컬에서 로그인 처리하기 위한 �
 ));
 
 var index = require('./routes/index')(passport, conn);
-// var signin = require('./routes/signin');
-// var login = require('./routes/login');
-// var findpw = require('./routes/findpw');
 var main = require('./routes/main')(passport, app);
 var board = require('./routes/board');
 var movie = require('./routes/movie');
@@ -118,9 +108,6 @@ app.use(express.static(path.join(__dirname, 'public')));
 app.use('/', index);
 app.use('/main', main);
 app.use('/board', board);
-// app.use('/signin', signin);
-// app.use('/login', login);
-// app.use('/findpw',findpw);
 app.use('/movie', movie);
 app.use('/food', food);
 app.use('/center', center);
