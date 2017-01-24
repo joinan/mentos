@@ -1,0 +1,58 @@
+//MySQL 쿼리
+
+--회원정보 테이블
+create table client_info(
+c_no int auto_increment,
+c_name varchar(20) not null,
+c_email varchar(40) not null,
+c_pw varchar(40) not null,
+c_nickname varchar(30) not null,
+c_age int,
+c_gender char(1),
+primary key(c_no)
+);
+
+--작성된 글 테이블
+create table memo_info(
+m_no int,
+m_content varchar(2000),
+m_date timestamp default current_timestamp,
+m_longitude double,
+m_latitude double,
+m_writer int,
+primary key (m_no),
+foreign key (m_writer) REFERENCES client_info (c_no)
+);
+
+-- 색 테이블
+create table memo_color(
+mc_no int,
+mc_r int not null,
+mc_g int not null,
+mc_b int not null,
+primary key (mc_no)
+);
+
+-- 감정 테이블
+create table emotion(
+e_no int,
+e_name varchar(20) not null,
+PRIMARY KEY (e_no)
+);
+
+-- test data input query
+//client_info
+insert into client_info (c_name, c_email, c_pw, c_nickname, c_age, c_gender)
+values('홍길동', 'email@email.com', 'test', '길동', 40, 'm');
+insert into client_info (c_name, c_email, c_pw, c_nickname, c_age, c_gender)
+values('장그래', 'email@email.com', 'test', '그래', 24, 'm');
+insert into client_info (c_name, c_email, c_pw, c_nickname, c_age, c_gender)
+values('김복주', 'email@email.com', 'test', '복주', 19, 'f');
+insert into client_info (c_name, c_email, c_pw, c_nickname, c_age, c_gender)
+values('이하이', 'email@email.com', 'test', '하이', 18, 'f');
+insert into client_info (c_name, c_email, c_pw, c_nickname, c_age, c_gender)
+values('보아', 'email@email.com', 'test', 'BOA', 30, 'f');
+
+//memo_info
+insert into memo_info (m_content, m_writer)
+values('상처를 치료해 줄 사람 어디 없나', 1);
