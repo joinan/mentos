@@ -48,7 +48,8 @@ app.use(session({
 // serializeUser : 세션에 처음 접속할 때 실행
 passport.serializeUser(function(user, done) { // user객체를 받아서
 	console.log('serializeUser', user); // 콘솔로그 찍어주고
-    done(null, user); // user객체를 세션에 보낸다.
+  console.log('유저에 아이디 값은', user.c_id);
+    done(null, user.c_id); // user객체를 세션에 보낸다.
 });
 
 // deserializeUser : 세션에 재차 접속할 때 실행
