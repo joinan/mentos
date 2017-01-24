@@ -44,6 +44,8 @@ module.exports = function(passport, conn){
         	if(err){
           		if(err.code == 'ER_DUP_ENTRY')
           			res.redirect('signinfail_dup');
+          		else
+          			res.redirect('login');
         	} else {
           		res.redirect('login');
         	}

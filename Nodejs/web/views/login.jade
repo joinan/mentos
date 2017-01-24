@@ -58,11 +58,6 @@ html(lang='ko')
       // /.container
     // Header Carousel
     header#myCarousel.carousel.slide
-      // Indicators
-      ol.carousel-indicators
-        li.active(data-target='#myCarousel', data-slide-to='0')
-        li(data-target='#myCarousel', data-slide-to='1')
-        li(data-target='#myCarousel', data-slide-to='2')
       // Wrapper for slides
       .carousel-inner
         .item.active
@@ -79,7 +74,7 @@ html(lang='ko')
       // /.row
       // Where all the magic happens
       // LOGIN FORM
-      .text-center(style='padding:50px 0;border-left-width: 50px;margin-left: 400px;margin-right: 400px;')
+      .text-center(style='padding:50px 0;border-left-width: 50px;')
         .logo 로그인
         // Main Form
         .login-form-1
@@ -96,7 +91,7 @@ html(lang='ko')
                 .form-group.login-group-checkbox
                   input#lg_remember(type='checkbox', name='lg_remember')
                   label(for='lg_remember') 아이디 저장
-              button.login-button(type='submit')
+              button.login-button(type='submit') 로그인
                 i.fa.fa-chevron-right
             .etc-login-form
               p
