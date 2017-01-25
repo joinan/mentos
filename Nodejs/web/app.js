@@ -47,12 +47,12 @@ app.use(session({
 // Passport 설정
 // serializeUser : 세션에 처음 접속할 때 실행
 passport.serializeUser(function(user, done) { // user객체를 받아서
-    done(null, user.c_id); // user객체를 세션에 보낸다.
+    done(null, user.c_name); // user객체를 세션에 보낸다.
 });
 
 // deserializeUser : 세션에 재차 접속할 때 실행
 passport.deserializeUser(function(id, done) { // id값을 받아서
-    var sql = 'SELECT * FROM client_info WHERE c_id=?'; // sql문 생성해서
+    var sql = 'SELECT * FROM client_info WHERE c_email=?'; // sql문 생성해서
     conn.query(sql, [id], function(err, results){ // 결과를 results로 받고
     	var user = results[0]; // user 객체로 결과를 받는다
     	if(err){ // 에러가 있으면
@@ -68,7 +68,7 @@ passport.use(new LocalStrategy( // 로컬에서 로그인 처리하기 위한 �
     function(username, password, done){ // 페이지에서 username과 password를 받아서
     	var id = username; // id와 pw에 넣어준다
      	var pw = password;
-     	var sql = 'SELECT * FROM client_info WHERE c_id=?'; // sql문 만들어서
+     	var sql = 'SELECT * FROM client_info WHERE c_email=?'; // sql문 만들어서
       	conn.query(sql, [id], function(err, results){ // 결과를 results로 받고
        		if(err){ // 에러가 있으면
           		return done('There is no user.'); // db에서 id를 찾을 수 없음
