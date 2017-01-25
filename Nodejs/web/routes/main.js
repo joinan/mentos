@@ -1,9 +1,18 @@
-var express = require('express');
-var router = express.Router();
+module.exports = function(passport, app) {
 
-/* GET home page. */
-router.get('/', function(req, res, next) {
-  res.render('main', { title: 'Main' });
-});
+	// app.use(passport.initialize());
+	// app.use(passport.session());
 
-module.exports = router;
+
+	var express = require('express');
+	var router = express.Router();
+
+	app.use(passport.session());
+	/* GET home page. */
+
+	router.get('/', function(req, res) {
+		res.render('main',{name : req.session.user.c_id});
+	});
+
+	return router;
+}
