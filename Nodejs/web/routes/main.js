@@ -11,7 +11,7 @@ module.exports = function(passport, app) {
 	/* GET home page. */
 
 	router.get('/', function(req, res) {
-		res.render('main',{name : req.session.user.c_id});
+		res.render('main',{name : req.session.user.c_name});
 	});
 
 	return router;

@@ -35,7 +35,7 @@ module.exports = function(passport, conn){
 
 	router.post('/signin', function(req, res){
     	var user = {
-        	c_id:req.body.reg_id,
+        	c_id:req.body.reg_email,
         	c_pw:req.body.reg_password,
         	c_name:req.body.reg_name
         };
