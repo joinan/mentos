@@ -29,6 +29,7 @@ html(lang='ko')
             span.icon-bar
             span.icon-bar
           a.navbar-brand(href='/main') Mentos
+          a.navbar-brand(href='/mypage') #{name}
         // Collect the nav links, forms, and other content for toggling
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
@@ -43,10 +44,12 @@ html(lang='ko')
                   a(href='/movie') 영화 추천
                 li.active
                   a(href='/food') 맛집 추천
-                li
-                  a(href='/center') 상담소
+            li
+              a(href='/center') 멘탈클리닉    
             li
               a(href='/mypage') 마이페이지
+            li
+              a(href='/logout') 로그아웃
         // /.navbar-collapse
       // /.container
     // Header Carousel
