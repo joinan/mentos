@@ -35,8 +35,7 @@ html(lang='ko')
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/main') Mentos
-          a.navbar-brand(href='/mypage') #{name}
+          a.navbar-brand(href='/login') Mentos
         // Collect the nav links, forms, and other content for toggling
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
@@ -48,20 +47,22 @@ html(lang='ko')
                 b.caret
               ul.dropdown-menu
                 li
-                  a(href='/movie') 영화 추천
+                  a(href='/login') 영화 추천
                 li
-                  a(href='/food') 맛집 추천
+                  a(href='/login') 맛집 추천
+                li
+                  a(href='/login') 상담소
             li
-                  a(href='/center') 멘탈클리닉    
-            li
-              a(href='/mypage') 마이페이지
-            li
-              a(href='/logout') 로그아웃
+              a(href='/login') 마이페이지
         // /.navbar-collapse
       // /.container
     // Header Carousel
     header#myCarousel.carousel.slide
-      
+      // Indicators
+      ol.carousel-indicators
+        li.active(data-target='#myCarousel', data-slide-to='0')
+        li(data-target='#myCarousel', data-slide-to='1')
+        li(data-target='#myCarousel', data-slide-to='2')
       // Wrapper for slides
       .carousel-inner
         .item.active
@@ -74,9 +75,47 @@ html(lang='ko')
         .col-lg-12
           h1.page-header
             | 지친 현대인들을 위한 멘탈 클리닉
-          ol.breadcrumb
-            | #{name}님 안녕하세요
+        
       // /.row
+      // Where all the magic happens
+      // REGISTRATION FORM
+      .text-center(style='padding:50px 0;border-left-width: 50px;margin-left: 400px;margin-right: 400px;')
+        .logo 필드 값이 올바르지 않습니다.
+        // Main Form
+        .login-form-1
+          form#register-form.text-left(action='/signin' method='post')
+            .login-form-main-message
+            .main-login-form
+              .login-group
+                .form-group
+                  label.sr-only(for='reg_nickname') 닉네임
+                  input#reg_nickname.form-control(type='text', name='reg_nickname', placeholder='닉네임')
+                .form-group
+                  label.sr-only(for='reg_password') 비밀번호
+                  input#reg_password.form-control(type='password', name='reg_password', placeholder='비밀번호')
+                .form-group
+                  label.sr-only(for='reg_password_confirm') 비밀번호 확인
+                  input#reg_password_confirm.form-control(type='password', name='reg_password_confirm', placeholder='비밀번호 확인')
+                .form-group
+                  label.sr-only(for='reg_email') 이메일
+                  input#reg_email.form-control(type='text', name='reg_email', placeholder='이메일')
+                .form-group
+                  label.sr-only(for='reg_name') 이름
+                  input#reg_name.form-control(type='text', name='reg_name', placeholder='이름')
+                .form-group.login-group-checkbox
+                  input#male(type='radio', name='reg_gender', placeholder='남성')
+                  label(for='male') 남성
+                  input#female(type='radio', name='reg_gender', placeholder='여성')
+                  label(for='female') 여성
+                
+              button.login-button(type='submit')
+                i.fa.fa-chevron-right
+            .etc-login-form
+              p
+                | 계정 생성을 하셨습니까? 
+                a(href='/login') 여기를 눌러서 로그인 하세요
+        // end:Main Form
+      hr
       // Footer
       footer
         .row
@@ -84,7 +123,8 @@ html(lang='ko')
             p Copyright © Mentos 2017
     // /.container
     // jQuery
-    
+    script(src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js')
+    script(src='http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/bootstrap.min.js')
     script(src='javascripts/jquery.js')
     // Bootstrap Core JavaScript
     script(src='javascripts/bootstrap.min.js')

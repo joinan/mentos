@@ -65,21 +65,26 @@ passport.deserializeUser(function(id, done) { // id값을 받아서
 });
 // 세션에 연결하기 위한 전략 설정
 passport.use(new LocalStrategy( // 로컬에서 로그인 처리하기 위한 전략
-    function(username, password, done){ // 페이지에서 username과 password를 받아서
-    	var id = username; // id와 pw에 넣어준다
-     	var pw = password;
-     	var sql = 'SELECT * FROM client_info WHERE c_email=?'; // sql문 만들어서
-      	conn.query(sql, [id], function(err, results){ // 결과를 results로 받고
-       		if(err){ // 에러가 있으면
-          		return done('There is no user.'); // db에서 id를 찾을 수 없음
-        	}
-        	var user = results[0]; // user객체에 결과값을 넣고
-        	if(pw === user.c_pw){ // 받은 pw가 db의 c_pw와 같으면
-            	done(null, user); // user객체를 성공시 사용
-          	} else {
-            	done(null, false); // 실패시 아무것도 하지 않는다.
-          	}
-      	});
+  function(username, password, done){ // 페이지에서 username과 password를 받아서
+    var email = username; // id와 pw에 넣어준다
+    var pw = password;
+    var sql = 'SELECT * FROM client_info WHERE c_email=?'; // sql문 만들어서
+    console.log('여기까지는 실행');
+      conn.query(sql, [email], function(err, results){ // 결과를 results로 받고
+        if(err){ // 에러가 있으면
+          return done('There is no user.'); // db에서 id를 찾을 수 없음
+        }
+        var user = results[0];
+        if(!user) {
+          return done(null, false);
+        }
+        	 // user객체에 결과값을 넣고
+        if(pw === user.c_pw){ // 받은 pw가 db의 c_pw와 같으면
+          done(null, user); // user객체를 성공시 사용
+        } else {
+          done(null, false); // 실패시 아무것도 하지 않는다.
+        }
+      });
     }
 ));
 
