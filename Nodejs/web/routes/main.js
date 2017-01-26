@@ -14,11 +14,7 @@ module.exports = function(passport, app) {
 		res.render('main',{name : req.session.user.c_name});
 	});
 
-	router.get('/logout', function(req, res) {
-		req.session.destory();
-		res.clearCookie('sid');
-		res.redirect('/login');
-	});
+	
 
 
 	return router;
