@@ -96,8 +96,8 @@ html(lang='ko')
                 .form-group.login-group-checkbox
                   input#lg_remember(type='checkbox', name='lg_remember')
                   label(for='lg_remember') 아이디 저장
-              button.login-button(id='loginSub' type='button') 로그인
-                i.fa.fa-chevron-right
+                .form-group.login-group-button
+                  button.login-button(id='loginSub' type='submit') 로그인
             .etc-login-form
               p
                 | 비밀번호를 분실하셨나요?
@@ -122,6 +122,7 @@ html(lang='ko')
       $('.carousel').carousel({
         interval: 5000 //changes the speed
       });
+    script(type="text/javascript").
       $("#lg_username").focusout(function(){
         if(!($("#lg_username").val()))
           $("#emptyEmail").text("  아이디를 입력하세요");
@@ -146,18 +147,20 @@ html(lang='ko')
               $("#lg_password").focus();
               return false;
           }
-          $.ajax({
-            method:"POST",
-            url:"/index",
-            dataType:"json",
-            data:$("#login-form").serialize(),
-            success: function(data){
-              alert(data.msg);
-            },
-            error:function(){
-              alert("code:"+request.status);
-            }
-          });
-          alert("code:"+request.status);
+          if($("#lg_username").val()!="" && $("#lg_password").val() != "") {
+            alert('오잉');
+            $.ajax({
+              url:"/loginProcess",
+              dataType:"jsonp",
+              type:"POST",
+              data:$("#login-form").serialize(),
+              success:function(data){
+                alert(data.msg);
+              },
+              error:function(request,status,error){
+                alert('코드:'+request.status+'\n'+'메세지:'+request.responseText+'\n'+'에러:'+error);
+              }
+            });
+          }
         });
       });
