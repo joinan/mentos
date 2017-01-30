@@ -23,6 +23,9 @@ html(lang='ko')
     link(href='http://fonts.googleapis.com/css?family=Varela+Round', rel='stylesheet', type='text/css')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    // ajax
+    script(src='https://code.jquery.com/jquery-1.10.2.js')
+    script(src='//code.jquery.com/jquery-1.11.0.min.js')
 
   body
     // Navigation
@@ -43,7 +46,7 @@ html(lang='ko')
               a(href='/login') 내 노트
             li.dropdown
               a.dropdown-toggle(href='#', data-toggle='dropdown')
-                | 추천 
+                | 추천
                 b.caret
               ul.dropdown-menu
                 li
@@ -51,7 +54,7 @@ html(lang='ko')
                 li
                   a(href='/login') 맛집 추천
             li
-              a(href='/center') 멘탈클리닉       
+              a(href='/center') 멘탈클리닉
             li
               a(href='/login') 마이페이지
         // /.navbar-collapse
@@ -70,7 +73,7 @@ html(lang='ko')
         .col-lg-12
           h1.page-header
             | 지친 현대인들을 위한 멘탈 클리닉
-        
+
       // /.row
       // Where all the magic happens
       // LOGIN FORM
@@ -85,17 +88,19 @@ html(lang='ko')
                 .form-group
                   label.sr-only(for='username') 이메일
                   input#lg_username.form-control(type='text', name='username', placeholder='이메일')
+                  font(color='red' id='emptyEmail')
                 .form-group
                   label.sr-only(for='password') 비밀번호
                   input#lg_password.form-control(type='password', name='password', placeholder='비밀번호')
+                  font(color='red' id='emptyPassword')
                 .form-group.login-group-checkbox
                   input#lg_remember(type='checkbox', name='lg_remember')
                   label(for='lg_remember') 아이디 저장
-              button.login-button(type='submit') 로그인
+              button.login-button(id='loginSub' type='button') 로그인
                 i.fa.fa-chevron-right
             .etc-login-form
               p
-                | 비밀번호를 분실하셨나요? 
+                | 비밀번호를 분실하셨나요?
                 a(href='/findpw') 여기를 눌러주세요
               p
                 | 처음이세요?
@@ -109,12 +114,50 @@ html(lang='ko')
             p Copyright © Mentos 2017
     // /.container
     // jQuery
-    
     script(src='javascripts/jquery.js')
     // Bootstrap Core JavaScript
     script(src='javascripts/bootstrap.min.js')
     // Script to Activate the Carousel
     script.
       $('.carousel').carousel({
-      interval: 5000 //changes the speed
-      })
+        interval: 5000 //changes the speed
+      });
+      $("#lg_username").focusout(function(){
+        if(!($("#lg_username").val()))
+          $("#emptyEmail").text("  아이디를 입력하세요");
+      else
+        $("#emptyEmail").text(" ");
+      });
+      $("#lg_password").focusout(function(){
+        if(!($("#lg_password").val()))
+          $("#emptyPassword").text("  비밀번호를 입력하세요");
+        else
+          $("#emptyPassword").text(" ");
+      });
+      $(document).ready(function(){
+        $("#loginSub").click(function(){
+          if ($("#lg_username").val() == "") {
+              alert('아이디를 입력하세요.');
+              $("#lg_username").focus();
+              return false;
+          }
+          if ($("#lg_password").val() == "") {
+              alert('비밀번호를 입력하세요.');
+              $("#lg_password").focus();
+              return false;
+          }
+          $.ajax({
+            method:"POST",
+            url:"/index",
+            dataType:"json",
+            data:$("#login-form").serialize(),
+            success: function(data){
+              alert(data.msg);
+            },
+            error:function(){
+              alert("code:"+request.status);
+            }
+          });
+          alert("code:"+request.status);
+        });
+      });

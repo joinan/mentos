@@ -16,18 +16,34 @@ module.exports = function(passport, conn){
 	  res.render('loginfail');
 	});
 
-	router.post('/login',
-    	passport.authenticate(
-    		'local',{
-    			failureRedirect: '/loginfail',
-    			failureFlash: true
-    		}
-    	),
-	    function(req, res) {
-	    	req.session.user = req.user;
-	        res.redirect('main');
-    	}
-    );
+	router.post('/login',function(req, res) {
+		var email = req.body.lg_username;
+		var password = req.body.lg_password;
+		var user;
+		console.log('eeeeeeeeee',email);
+		console.log('pppppppppp',password);
+		var sql = 'SELECT * FROM client_info WHERE c_email=?';
+		conn.query(sql, [email], function(err, results){
+			if(err){
+				console.log('@@@@@@@@@@@@@@',err.code);
+				res.redirect('/');
+			}else{
+				console.log('!!!!!!!!!!!!!',results[0]);
+				user = results[0];
+				console.log('!!!!!!!!!!!!!',user);
+				if(!user)
+					res.render('login',{result:'failEmail', msg:'이메일이 틀립니다.'})
+				else {
+					if(password == user.c_pw){
+						req.session.name = user.c_name;
+						res.redirect('main',{result:'success', name:user.c_name, msg:'환영합니다'});
+					}else{
+						res.render('login',{result:'failPassword', msg:'비밀번호가 틀립니다.'})
+					}
+				}
+			}
+		});
+  });
 
     router.get('/logout', function(req, res) {
 		req.session.destroy();
