@@ -96,8 +96,7 @@ html(lang='ko')
                 .form-group.login-group-checkbox
                   input#lg_remember(type='checkbox', name='lg_remember')
                   label(for='lg_remember') 아이디 저장
-                .form-group.login-group-button
-                  button.login-button(id='loginSub' type='submit') 로그인
+                button.login-button(id='loginSub' type='submit') 로그인
             .etc-login-form
               p
                 | 비밀번호를 분실하셨나요?
@@ -148,7 +147,6 @@ html(lang='ko')
               return false;
           }
           if($("#lg_username").val()!="" && $("#lg_password").val() != "") {
-            alert('오잉');
             $.ajax({
               url:"/loginProcess",
               dataType:"jsonp",

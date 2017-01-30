@@ -8,6 +8,7 @@ var bodyParser = require('body-parser');
 var session = require('express-session');
 var MySQLStore = require('express-mysql-session')(session);
 var passport = require('passport');
+var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 
 var app = express();
@@ -17,6 +18,8 @@ app.use(passport.initialize());
 
 // passport를 session에 연결
 app.use(passport.session());
+
+app.use(flash());
 
 // DB 설정
 var mysql = require('mysql');
@@ -47,22 +50,29 @@ app.use(session({
 // Passport 설정
 // serializeUser : 세션에 처음 접속할 때 실행
 passport.serializeUser(function(user, done) { // user객체를 받아서
-    done(null, user.c_name); // user객체를 세션에 보낸다.
+	console.log('Serialize');
+	done(null, user); // user객체를 세션에 보낸다.
 });
 
 // deserializeUser : 세션에 재차 접속할 때 실행
-passport.deserializeUser(function(id, done) { // id값을 받아서
-    var sql = 'SELECT * FROM client_info WHERE c_email=?'; // sql문 생성해서
-    conn.query(sql, [id], function(err, results){ // 결과를 results로 받고
-    	var user = results[0]; // user 객체로 결과를 받는다
-    	if(err){ // 에러가 있으면
-        	console.log(err); // 에러 출력하고
-        	done('There is no user.'); // db에서 해당 id를 찾을 수 없음
-      	} else {
-        	done(null, user); // 에러가 없다면 user객체를 세션에 보낸다
-      	}
-    });
+// passport.deserializeUser(function(id, done) { // id값을 받아서
+//     var sql = 'SELECT * FROM client_info WHERE c_email=?'; // sql문 생성해서
+//     conn.query(sql, [id], function(err, results){ // 결과를 results로 받고
+//     	var user = results[0]; // user 객체로 결과를 받는다
+//     	if(err){ // 에러가 있으면
+//         	console.log(err); // 에러 출력하고
+//         	done('There is no user.'); // db에서 해당 id를 찾을 수 없음
+//       	} else {
+//         	done(null, user); // 에러가 없다면 user객체를 세션에 보낸다
+//       	}
+//     });
+// });
+passport.deserializeUser(function(user,done){
+	console.log('deserialize');
+	console.log(user);
+	done(null,user);
 });
+
 // 세션에 연결하기 위한 전략 설정
 passport.use(new LocalStrategy( // 로컬에서 로그인 처리하기 위한 전략
   function(username, password, done){ // 페이지에서 username과 password를 받아서
