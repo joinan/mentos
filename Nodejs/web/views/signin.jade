@@ -43,7 +43,7 @@ html(lang='ko')
               a(href='/board') 내 노트
             li.dropdown
               a.dropdown-toggle(href='#', data-toggle='dropdown')
-                | 추천 
+                | 추천
                 b.caret
               ul.dropdown-menu
                 li
@@ -75,7 +75,7 @@ html(lang='ko')
         .col-lg-12
           h1.page-header
             | 지친 현대인들을 위한 멘탈 클리닉
-        
+
       // /.row
       // Where all the magic happens
       // REGISTRATION FORM
@@ -88,31 +88,44 @@ html(lang='ko')
             .main-login-form
               .login-group
                 .form-group
-                  label.sr-only(for='reg_id') 아이디
-                  input#reg_id.form-control(type='text', name='reg_id', placeholder='아이디')
+                  label.sr-only(for='reg_nickname') 닉네임
+                  input#reg_nickname.form-control(type='text', name='reg_nickname', placeholder='닉네임')
+                  font(color='red' id='emptyNickname')
                 .form-group
                   label.sr-only(for='reg_password') 비밀번호
                   input#reg_password.form-control(type='password', name='reg_password', placeholder='비밀번호')
+                  font(color='red' id='emptyPassword')
                 .form-group
                   label.sr-only(for='reg_password_confirm') 비밀번호 확인
                   input#reg_password_confirm.form-control(type='password', name='reg_password_confirm', placeholder='비밀번호 확인')
+                  font(color='red' id='emptyPasswordConfirm')
                 .form-group
                   label.sr-only(for='reg_email') 이메일
                   input#reg_email.form-control(type='text', name='reg_email', placeholder='이메일')
+                  font(color='red' id='emptyEmail')
                 .form-group
                   label.sr-only(for='reg_name') 이름
                   input#reg_name.form-control(type='text', name='reg_name', placeholder='이름')
+                  font(color='red' id='emptyName')
+                .form-group
+                  label 연령대
+                  select#reg_age.form-control(name='reg_age')
+                    option(value=10) 10대
+                    option(value=20) 20대
+                    option(value=30) 30대
+                    option(value=40) 40대
+                    option(value=50) 50대
+                  font(color='red' id='emptyAge')
                 .form-group.login-group-checkbox
-                  input#male(type='radio', name='reg_gender', placeholder='남성')
+                  input#male(type='radio', name='reg_gender', placeholder='남성', value='m')
                   label(for='male') 남성
-                  input#female(type='radio', name='reg_gender', placeholder='여성')
+                  input#female(type='radio', name='reg_gender', value='f',placeholder='여성')
                   label(for='female') 여성
-                
-              button.login-button(type='submit')
-                i.fa.fa-chevron-right
+                  font(color='red' id='emptyGender')
+              button#regSub.login-button(type='submit') 가입하기
             .etc-login-form
               p
-                | 계정 생성을 하셨습니까? 
+                | 계정 생성을 하셨습니까?
                 a(href='/login') 여기를 눌러서 로그인 하세요
         // end:Main Form
       hr
@@ -133,3 +146,95 @@ html(lang='ko')
       $('.carousel').carousel({
       interval: 5000 //changes the speed
       })
+    script(type="text/javascript").
+      $("#reg_nickname").focusout(function(){
+        if(!($("#reg_nickname").val()))
+          $("#emptyNickname").text("  닉네임을 입력하세요");
+      else
+        $("#emptyNickname").text(" ");
+      });
+      $("#reg_name").focusout(function(){
+        if(!($("#reg_name").val()))
+          $("#emptyName").text("  이름을 입력하세요");
+      else
+        $("#emptyName").text(" ");
+      });
+      $("#reg_email").focusout(function(){
+        if(!($("#reg_email").val()))
+          $("#emptyEmail").text("  이메일을 입력하세요");
+      else {
+        $("#emptyEmail").text(" ");
+        $.ajax({
+          url:"/duplEmail",
+          dataType:"jsonp",
+          type:"POST",
+          data:$("#login-form").serialize(),
+          success:function(data){
+            alert(data.msg);
+          },
+          error:function(request,status,error){
+            alert('코드:'+request.status+'\n'+'메세지:'+request.responseText+'\n'+'에러:'+error);
+          }
+        });
+        }
+      });
+      $("#reg_password").focusout(function(){
+        if(!($("#reg_password").val()))
+          $("#emptyPassword").text("  비밀번호를 입력하세요");
+        else {
+          $("#emptyPassword").text(" ");
+          if($("#reg_password").val()!=$("#reg_password_confirm").val())
+            $("#emptyPasswordConfirm").text("  입력한 비밀번호가 같지 않습니다");
+          else
+            $("#emptyPasswordConfirm").text(" ");
+        }
+      });
+      $("#reg_password_confirm").focusout(function(){
+        if(!($("#reg_password_confirm").val()))
+          $("#emptyPasswordConfirm").text("  비밀번호를 입력하세요");
+        else {
+          $("#emptyPasswordConfirm").text(" ");
+          if($("#reg_password").val()!=$("#reg_password_confirm").val())
+            $("#emptyPasswordConfirm").text("  입력한 비밀번호가 같지 않습니다");
+          else
+            $("#emptyPasswordConfirm").text(" ");
+        }
+      });
+      $(document).ready(function(){
+        $("#regSub").click(function(){
+          if ($("#reg_nickname").val() == "") {
+              alert('닉네임을 입력하세요.');
+              $("#reg_nickname").focus();
+              return false;
+          }
+          if ($("#reg_password").val() == "") {
+              alert('비밀번호를 입력하세요.');
+              $("#reg_password").focus();
+              return false;
+          }
+          if ($("#reg_password_confirm").val() == "") {
+              alert('비밀번호를 입력하세요.');
+              $("#reg_password_confirm").focus();
+              return false;
+          }
+          if($("#reg_password").val()!=$("#reg_password_confirm").val()) {
+              alert('비밀번호가 같지 않습니다.');
+              $("#reg_password_confirm").focus();
+              return false;
+          }
+          if ($("#reg_email").val() == "") {
+              alert('이메일을 입력하세요.');
+              $("#reg_email").focus();
+              return false;
+          }
+          if ($("#reg_name").val() == "") {
+              alert('이름을 입력하세요.');
+              $("#reg_name").focus();
+              return false;
+          }
+          if ($("#male").checked != true || $("#female").checked != true) {
+              alert('성별을 선택하세요.');
+              return false;
+          }
+        });
+      });
