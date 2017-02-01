@@ -23,6 +23,9 @@ html(lang='ko')
     link(href='http://fonts.googleapis.com/css?family=Varela+Round', rel='stylesheet', type='text/css')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    // ajax
+    script(src='https://code.jquery.com/jquery-1.10.2.js')
+    script(src='//code.jquery.com/jquery-1.11.0.min.js')
 
   body
     // Navigation
@@ -43,7 +46,7 @@ html(lang='ko')
               a(href='/board') 내 노트
             li.dropdown
               a.dropdown-toggle(href='#', data-toggle='dropdown')
-                | 추천 
+                | 추천
                 b.caret
               ul.dropdown-menu
                 li
@@ -75,33 +78,41 @@ html(lang='ko')
         .col-lg-12
           h1.page-header
             | 지친 현대인들을 위한 멘탈 클리닉
-        
+
       // /.row
       // Where all the magic happens
       // FORGOT PASSWORD FORM
       .text-center(style='padding:50px 0;border-left-width: 50px;margin-left: 400px;margin-right: 400px;')
-        .logo 비밀번호 분실
         // Main Form
         .login-form-1
-          form#forgot-password-form.text-left
-            .etc-login-form
-              p
-                | 가입하셨을때 질문에 대한 답변을 적어주세요.
-            .login-form-main-message
+          form#findpw-form.text-left(action='/findpw', method='post')
             .main-login-form
               .login-group
                 .form-group
-                  label.sr-only(for='fp_email') Email address
-                  input#fp_email.form-control(type='text', name='fp_email', placeholder='답변')
-              button.login-button(type='submit')
-                i.fa.fa-chevron-right
+                    label.sr-only(for='find_email') 이메일
+                    input#find_email.form-control(type='text', name='find_email', placeholder='이메일을 입력하세요')
+                    font#emptyEmail(color='red')
+                .form-group
+                  label 질문
+                  select#find_question.form-control(name='find_question')
+                    option(value='1') 나의 고향은?
+                    option(value='2') 내 별명은?
+                    option(value='3') 내가 처음 키운 애완동물 이름은?
+                    option(value='4') 내가 좋아하는 가수는?
+                    option(value='5') 나의 좌우명은?
+                .form-group
+                  label.sr-only(for='find_answer') 답
+                  input#find_answer.form-control(type='text', name='find_answer', placeholder='답을 입력하세요.')
+                  font#emptyAnswer(color='red')
+                button#findpwSub.login-button(type='button') 확인
             .etc-login-form
               p
-                | 비밀번호를 찾으셨습니까? 
-                a(href='/login') 여기를 눌러서 로그인하세요
+                | 비밀번호를 찾으셨나요?
+                a(href='/login')     로그인해주세요.
               p
-                | 새로운 계정을 생성하시겠습니까? 
-                a(href='/signin') 여기를 눌러서 새로운 계정을 만드세요
+                | 이메일이 없으신가요?
+                a(href='/signin') 새로운 계정을 만들어주세요
+
         // end:Main Form
       hr
       // Footer
@@ -111,12 +122,52 @@ html(lang='ko')
             p Copyright © Mentos 2017
     // /.container
     // jQuery
-    
+
     script(src='javascripts/jquery.js')
     // Bootstrap Core JavaScript
     script(src='javascripts/bootstrap.min.js')
     // Script to Activate the Carousel
     script.
-      $('.carousel').carousel({
-      interval: 5000 //changes the speed
-      })
+        $('.carousel').carousel({
+            interval: 5000 //changes the speed
+        });
+    script(type="text/javascript").
+        $("#find_email").focusout(function(){
+          if(!($("#find_email").val()))
+            $("#emptyEmail").text("  이메일을 입력하세요");
+        else
+            $("#emptyEmail").text(" ");
+        });
+        $("#find_answer").focusout(function(){
+          if(!($("#find_answer").val()))
+            $("#emptyAnswer").text("  답을 입력하세요");
+        else
+            $("#emptyAnswer").text(" ");
+        });
+        $(document).ready(function(){
+          $("#findpwSub").click(function(){
+              if ($("#find_email").val() == "") {
+                  alert('이메일을 입력하세요.');
+                  $("#find_email").focus();
+                  return false;
+              }
+              if ($("#find_answer").val() == "") {
+                  alert('답을 입력하세요.');
+                  $("#find_answer").focus();
+                  return false;
+              }
+              $.ajax({
+                url:"/findpwProcess",
+                dataType:"jsonp",
+                type:"POST",
+                data:$("#findpw-form").serialize(),
+                success:function(data){
+                  alert(data.msg);
+                },
+                error:function(request,status,error){
+                  alert('코드:'+request.status+'\n'+'메세지:'+request.responseText+'\n'+'에러:'+error);
+                }
+              });
+
+          });
+        });

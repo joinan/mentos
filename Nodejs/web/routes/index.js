@@ -1,5 +1,6 @@
 module.exports = function(passport, conn){
 	var sizeof = require('object-sizeof');
+	var sleep = require('sleep');
 	var express = require('express');
 	var router = express.Router();
 
@@ -123,7 +124,7 @@ module.exports = function(passport, conn){
 			c_answer	:req.body.reg_answer
 		}, function(err, results){
         	if(err){
-          		res.jsonp({msg:'회원가입에 실패했습니다.'})
+          		res.jsonp({msg:'회원가입에 실패했습니다.'});
         	} else {
           		res.jsonp({msg:'회원가입에 성공했습니다.'});
         	}
@@ -138,10 +139,29 @@ module.exports = function(passport, conn){
 	//   res.render('signinfail_bad_field');
 	// });
 
-
 	router.get('/findpw', function(req, res){
 		res.render('findpw');
 	});
+
+	router.post('/findpwProcess', function(req, res){
+		var email = req.body.find_email;
+		var question = req.body.find_question;
+		var answer = req.body.find_answer;
+		var sql = 'SELECT * FROM client_info WHERE c_email=?';
+		conn.query(sql, [email], function(err, results){
+			user = results[0];
+			if(user==undefined)
+				res.jsonp({msg:'비밀번호를 찾을 수 없습니다.'});
+			else{
+				if(question==user.c_question && answer==user.c_answer)
+					res.jsonp({msg:'비밀번호는 '+user.c_pw+' 입니다.'});
+				else
+					res.jsonp({msg:'비밀번호를 찾을 수 없습니다.'});
+			}
+		});
+	});
+
+
 
 	function ensureAuthenticated(req, res, next){
 		if(req.isAuthenticated()) { return next();}
