@@ -19,6 +19,7 @@
     "morgan": "~1.7.0",
     "node-mysql": "^0.4.2",
     "nodemailer": "*",
+    "object-sizeof": "^1.1.1",
     "passport": "^0.3.2",
     "passport-local": "^1.0.0",
     "serve-favicon": "~2.3.0"
