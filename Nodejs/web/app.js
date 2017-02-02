@@ -10,6 +10,8 @@ var MySQLStore = require('express-mysql-session')(session);
 var passport = require('passport');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
+var MongoClient = require('mongodb').MongoClient;
+var R = require('r-script');
 
 var app = express();
 
@@ -32,6 +34,14 @@ var conn = mysql.createConnection({
 });
 // mysql 연결
 conn.connect();
+
+// mongoDB 설정
+var url = 'mongodb://localhost:27017/mentos';
+var dbObj = null;
+MongoClient.connect(url, function(err, db) {
+    console.log("Connected correctly to MongoDB server");
+    dbObj = db;
+});
 
 // 세션 설정
 app.use(session({
