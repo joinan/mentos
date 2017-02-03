@@ -16,6 +16,7 @@ module.exports = function(MongoClient) {
 	/* GET home page. */
 
 	router.get('/', function(req, res) {
+
 		if(!req.session.user)
 			res.redirect('login');
         var board = dbObj.collection('mentos');

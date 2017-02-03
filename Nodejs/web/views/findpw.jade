@@ -26,6 +26,8 @@ html(lang='ko')
     // ajax
     script(src='https://code.jquery.com/jquery-1.10.2.js')
     script(src='//code.jquery.com/jquery-1.11.0.min.js')
+    script(src='dist/sweetalert.min.js')
+    link(rel='stylesheet', type='text/css', href='dist/sweetalert.css')
 
   body
     // Navigation
@@ -147,12 +149,12 @@ html(lang='ko')
         $(document).ready(function(){
           $("#findpwSub").click(function(){
               if ($("#find_email").val() == "") {
-                  alert('이메일을 입력하세요.');
+                  swal('이메일을 입력하세요.','','error');
                   $("#find_email").focus();
                   return false;
               }
               if ($("#find_answer").val() == "") {
-                  alert('답을 입력하세요.');
+                  swal('답을 입력하세요.','','error');
                   $("#find_answer").focus();
                   return false;
               }
@@ -162,7 +164,13 @@ html(lang='ko')
                 type:"POST",
                 data:$("#findpw-form").serialize(),
                 success:function(data){
-                  alert(data.msg);
+                    if(data.result)
+                        swal({
+                            title: data.msg,
+                            imageUrl: "images/key.png"
+                        });
+                    else
+                        swal(data.msg,'','error')
                 },
                 error:function(request,status,error){
                   alert('코드:'+request.status+'\n'+'메세지:'+request.responseText+'\n'+'에러:'+error);

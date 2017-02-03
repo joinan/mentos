@@ -28,12 +28,12 @@ module.exports = function(passport, conn){
 			}else{
 				user = results[0];
 				if(!user)
-					res.jsonp({msg:'이메일이 없습니다.'});
+					res.jsonp({result:1, msg:'이메일이 없습니다.'});
 				else {
 					if(password == user.c_pw){
-						res.jsonp({msg:'환영합니다.'});
+						res.jsonp({result:0, msg:'환영합니다.'});
 					}else{
-						res.jsonp({msg:'비밀번호가 틀립니다.'});
+						res.jsonp({result:2, msg:'비밀번호가 틀립니다.'});
 					}
 				}
 			}
@@ -123,9 +123,9 @@ module.exports = function(passport, conn){
 			c_answer	:req.body.reg_answer
 		}, function(err, results){
         	if(err){
-          		res.jsonp({msg:'회원가입에 실패했습니다.'});
+          		res.jsonp({result:false,msg:'회원가입에 실패했습니다.'});
         	} else {
-          		res.jsonp({msg:'회원가입에 성공했습니다.'});
+          		res.jsonp({result:true,msg:'회원가입에 성공했습니다.'});
         	}
       	});
     });
@@ -153,9 +153,9 @@ module.exports = function(passport, conn){
 				res.jsonp({msg:'비밀번호를 찾을 수 없습니다.'});
 			else{
 				if(question==user.c_question && answer==user.c_answer)
-					res.jsonp({msg:'비밀번호는 '+user.c_pw+' 입니다.'});
+					res.jsonp({result:true,msg:'비밀번호는 '+user.c_pw+' 입니다.'});
 				else
-					res.jsonp({msg:'비밀번호를 찾을 수 없습니다.'});
+					res.jsonp({result:false,msg:'비밀번호를 찾을 수 없습니다.'});
 			}
 		});
 	});

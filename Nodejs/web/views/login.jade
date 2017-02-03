@@ -26,6 +26,9 @@ html(lang='ko')
     // ajax
     script(src='https://code.jquery.com/jquery-1.10.2.js')
     script(src='//code.jquery.com/jquery-1.11.0.min.js')
+    script(src='dist/sweetalert.min.js')
+    link(rel='stylesheet', type='text/css', href='dist/sweetalert.css')
+
 
   body
     // Navigation
@@ -137,12 +140,12 @@ html(lang='ko')
       $(document).ready(function(){
         $("#loginSub").click(function(){
           if ($("#lg_username").val() == "") {
-              alert('아이디를 입력하세요.');
+              swal('아이디를 입력하세요.');
               $("#lg_username").focus();
               return false;
           }
           if ($("#lg_password").val() == "") {
-              alert('비밀번호를 입력하세요.');
+              swal('비밀번호를 입력하세요.');
               $("#lg_password").focus();
               return false;
           }
@@ -153,7 +156,9 @@ html(lang='ko')
               type:"POST",
               data:$("#login-form").serialize(),
               success:function(data){
-                alert(data.msg);
+                  if(data.result!=0)
+                      swal({title:data.msg,showConfirmButton: false},"","error");
+
               },
               error:function(request,status,error){
                 alert('코드:'+request.status+'\n'+'메세지:'+request.responseText+'\n'+'에러:'+error);

@@ -23,6 +23,8 @@ html(lang='ko')
     link(href='http://fonts.googleapis.com/css?family=Varela+Round', rel='stylesheet', type='text/css')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    script(src='dist/sweetalert.min.js')
+    link(rel='stylesheet', type='text/css', href='dist/sweetalert.css')
 
 
 
@@ -79,6 +81,7 @@ html(lang='ko')
           ol.breadcrumb
             | #{name}님 안녕하세요
         input#jsontext(type='hidden', value='#{jsontext}')
+        input#success(type='hidden', value='true')
         #board
 
 
@@ -100,6 +103,9 @@ html(lang='ko')
       });
     script(type='text/javascript').
         $(document).ready(function () {
+            swal("환영합니다", "", "success");
+
+
             var article = JSON.parse($('#jsontext').val());
             if(article.length > 0) {
                 for (var i = 0; i < article.length; i++) {

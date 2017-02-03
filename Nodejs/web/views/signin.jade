@@ -26,6 +26,9 @@ html(lang='ko')
     // ajax
     script(src='https://code.jquery.com/jquery-1.10.2.js')
     script(src='//code.jquery.com/jquery-1.11.0.min.js')
+    script(src='dist/sweetalert.min.js')
+    link(rel='stylesheet', type='text/css', href='dist/sweetalert.css')
+
   body
     // Navigation
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
@@ -137,7 +140,7 @@ html(lang='ko')
                   label.sr-only(for='reg_answer') 답
                   input#reg_answer.form-control(type='text', name='reg_answer', placeholder='답')
                   font(color='red' id='emptyAnswer')
-              button#regSub.login-button(type='submit') 가입하기
+              button#regSub.login-button(type='button') 가입하기
             .etc-login-form
               p
                 | 계정 생성을 하셨습니까?
@@ -233,41 +236,41 @@ html(lang='ko')
       $(document).ready(function(){
         $("#regSub").click(function(){
             if ($("#reg_email").val() == "") {
-                alert('이메일을 입력하세요.');
+                swal("이메일을 입력하세요.","","error");
                 $("#reg_email").focus();
                 return false;
             }
             if ($("#reg_password").val() == "") {
-                alert('비밀번호를 입력하세요.');
+                swal("비밀번호를 입력하세요.","","error");
                 $("#reg_password").focus();
                 return false;
             }
             if ($("#reg_password_confirm").val() == "") {
-                alert('비밀번호를 입력하세요.');
+                swal("비밀번호를 입력하세요.","","error");
                 $("#reg_password_confirm").focus();
                 return false;
             }
             if ($("#reg_name").val() == "") {
-                alert('이름을 입력하세요.');
+                swal("이름을 입력하세요.","","error");
                 $("#reg_name").focus();
                 return false;
             }
           if ($("#reg_nickname").val() == "") {
-              alert('닉네임을 입력하세요.');
+              swal("닉네임을 입력하세요.","","error");
               $("#reg_nickname").focus();
               return false;
           }
           if ($("#reg_answer").val() == "") {
-              alert('답을 입력하세요.');
+              swal("답을 입력하세요.","","error");
               $("#reg_answer").focus();
               return false;
           }
           if ($("#male").checked == true || $("#female").checked == true) {
-              alert('성별을 선택하세요.');
+              swal('성별을 선택하세요.','','error');
               return false;
           }
           if($("#reg_password").val()!=$("#reg_password_confirm").val()) {
-              alert('비밀번호가 같지 않습니다.');
+              swal('비밀번호가 같지 않습니다.','','error');
               $("#reg_password_confirm").focus();
               return false;
           }
@@ -277,7 +280,10 @@ html(lang='ko')
             type:"POST",
             data:$("#register-form").serialize(),
             success:function(data){
-              alert(data.msg);
+                if(data.result)
+                    swal(data.msg,"","success");
+                else
+                    swal(data.msg,'','error');
             },
             error:function(request,status,error){
               alert('코드:'+request.status+'\n'+'메세지:'+request.responseText+'\n'+'에러:'+error);
