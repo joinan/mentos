@@ -1,0 +1,7 @@
+> library(DBI)
+> library(RMySQL)
+> con <- dbConnect(dbDriver("MySQL"), dbname = "movie_schema", user = "root", password = "1111")
+> dbListTables(con)
+> data <- dbSendQuery(con, "select * from movie")
+> test.table <- fetch(data)
+> dbWriteTable(con, "resulttable", test.table, overwrite = TRUE)

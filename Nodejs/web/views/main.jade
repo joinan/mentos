@@ -24,6 +24,8 @@ html(lang='ko')
     script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
 
+
+
   body
     // Navigation
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
@@ -52,7 +54,7 @@ html(lang='ko')
                 li
                   a(href='/food') 맛집 추천
             li
-              a(href='/center') 멘탈클리닉    
+              a(href='/consult') 멘탈클리닉
             li
               a(href='/mypage') 마이페이지
             li
@@ -76,7 +78,10 @@ html(lang='ko')
             | 지친 현대인들을 위한 멘탈 클리닉
           ol.breadcrumb
             | #{name}님 안녕하세요
-      // /.row
+        input#jsontext(type='hidden', value='#{jsontext}')
+        #board
+
+
       // Footer
       footer
         .row
@@ -92,4 +97,11 @@ html(lang='ko')
     script.
       $('.carousel').carousel({
       interval: 5000 //changes the speed
-      })
+      });
+    script(type='text/javascript').
+        $(document).ready(function () {
+            var article = JSON.parse($('#jsontext').val());
+            for(var i=0;i<article.length;i++) {
+                $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>'+article[i].c_title+'</h4></div><div class="panel-body"><p>'+article[i].c_content+'</p></div></div></div>');
+            }
+        });

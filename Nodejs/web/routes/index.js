@@ -1,4 +1,6 @@
 module.exports = function(passport, conn){
+	var sizeof = require('object-sizeof');
+	var sleep = require('sleep');
 	var express = require('express');
 	var router = express.Router();
 
@@ -86,36 +88,80 @@ module.exports = function(passport, conn){
 		res.render('signin');
 	});
 
+	router.post('/duplEmail', function(req, res, next){
+		var email = req.body.reg_email;
+		console.log('@@@@@$$$$$$$$$$$$$$$$$$',email);
+		var sql = 'SELECT * FROM client_info WHERE c_email=?';
+		conn.query(sql, [email], function(err, results){
+			if(err){
+				res.jsonp({msg:'ERROR'});
+			}else{
+				user = results[0];
+				if(sizeof(user)==0) {
+					console.log('!@!@!@!@!@',user);
+					res.jsonp({result:true, msg:'사용가능합니다.'});
+				}
+				else
+					res.jsonp({result:false, msg:'이메일이 중복됩니다'});
+			}
+		});
+	});
+
 	router.post('/signin', function(req, res){
-        console.log('!&@$*(!^&@$*(!^@&$(!@^&(*',req.body.reg_age);
-      	var sql = 'INSERT INTO client_info (c_email, c_pw, c_name, c_nickname, c_gender, c_age) VALUES (?,?,?,?,?,?)';
-      	conn.query(sql, [req.body.reg_email,req.body.reg_password,req.body.reg_name,req.body.reg_nickname, req.body.reg_gender, req.body.reg_age], function(err, results){
+		res.redirect('login');
+	});
+
+	router.post('/signinProcess', function(req, res){
+      	var sql = 'INSERT INTO client_info set ?';
+      	conn.query(sql, {
+			c_email		:req.body.reg_email,
+			c_pw		:req.body.reg_password,
+			c_name		:req.body.reg_name,
+			c_nickname	:req.body.reg_nickname,
+			c_gender	:req.body.reg_gender,
+			c_age	:req.body.reg_age,
+			c_question	:req.body.reg_question,
+			c_answer	:req.body.reg_answer
+		}, function(err, results){
         	if(err){
-          		if(err.code == 'ER_DUP_ENTRY')
-          			res.redirect('signinfail_dup');
-          		else if(err.code == 'ER_BAD_FIELD_ERROR')
-          			res.redirect('signinfail_bad_field');
-          		else {
-          			res.redirect('signin');
-          		}
+          		res.jsonp({msg:'회원가입에 실패했습니다.'});
         	} else {
-          		res.redirect('login');
+          		res.jsonp({msg:'회원가입에 성공했습니다.'});
         	}
       	});
     });
 
-    router.get('/signinfail_dup', function(req, res, next) {
-	  res.render('signinfail_dup');
-	});
-
-	router.get('/signinfail_bad_field', function(req, res, next) {
-	  res.render('signinfail_bad_field');
-	});
-
+    // router.get('/signinfail_dup', function(req, res, next) {
+	//   res.render('signinfail_dup');
+	// });
+	//
+	// router.get('/signinfail_bad_field', function(req, res, next) {
+	//   res.render('signinfail_bad_field');
+	// });
 
 	router.get('/findpw', function(req, res){
 		res.render('findpw');
 	});
+
+	router.post('/findpwProcess', function(req, res){
+		var email = req.body.find_email;
+		var question = req.body.find_question;
+		var answer = req.body.find_answer;
+		var sql = 'SELECT * FROM client_info WHERE c_email=?';
+		conn.query(sql, [email], function(err, results){
+			user = results[0];
+			if(user==undefined)
+				res.jsonp({msg:'비밀번호를 찾을 수 없습니다.'});
+			else{
+				if(question==user.c_question && answer==user.c_answer)
+					res.jsonp({msg:'비밀번호는 '+user.c_pw+' 입니다.'});
+				else
+					res.jsonp({msg:'비밀번호를 찾을 수 없습니다.'});
+			}
+		});
+	});
+
+
 
 	function ensureAuthenticated(req, res, next){
 		if(req.isAuthenticated()) { return next();}

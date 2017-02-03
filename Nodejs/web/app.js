@@ -10,6 +10,8 @@ var MySQLStore = require('express-mysql-session')(session);
 var passport = require('passport');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
+var MongoClient = require('mongodb').MongoClient;
+var R = require('r-script');
 
 var app = express();
 
@@ -32,6 +34,8 @@ var conn = mysql.createConnection({
 });
 // mysql 연결
 conn.connect();
+
+
 
 // 세션 설정
 app.use(session({
@@ -99,11 +103,11 @@ passport.use(new LocalStrategy( // 로컬에서 로그인 처리하기 위한 �
 ));
 
 var index = require('./routes/index')(passport, conn);
-var main = require('./routes/main')(passport, app);
-var board = require('./routes/board');
+var main = require('./routes/main')(MongoClient);
+var board = require('./routes/board')(MongoClient);
 var movie = require('./routes/movie');
 var food = require('./routes/food');
-var center = require('./routes/center');
+var consult = require('./routes/consult')(passport, app, conn);
 var mypage = require('./routes/mypage');
 
 
@@ -125,7 +129,7 @@ app.use('/main', main);
 app.use('/board', board);
 app.use('/movie', movie);
 app.use('/food', food);
-app.use('/center', center);
+app.use('/consult', consult);
 app.use('/mypage', mypage);
 
 // catch 404 and forward to error handler
