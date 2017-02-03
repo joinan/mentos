@@ -1,0 +1,96 @@
+doctype html
+html(lang='ko')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='')
+    meta(name='author', content='')
+    title MENTal Of uS
+    // Bootstrap Core CSS
+    link(href='stylesheets/bootstrap.min.css', rel='stylesheet')
+    // Custom CSS
+    link(href='stylesheets/modern-business.css', rel='stylesheet')
+    // Custom Fonts
+    link(href='font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+    // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
+    // WARNING: Respond.js doesn't work if you view the page via file://
+    //if lt IE 9
+      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+  body
+    nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+      .container
+        // Brand and toggle get grouped for better mobile display
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/main') Mentos
+          a.navbar-brand(href='/mypage') #{name}
+        // Collect the nav links, forms, and other content for toggling
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right
+            li.active
+              a(href='/board') 내 노트
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | 추천 
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='/movie') 영화 추천
+                li
+                  a(href='/food') 맛집 추천
+            li
+              a(href='/consult') 멘탈클리닉 
+            li
+              a(href='/mypage') 마이페이지
+            li
+              a(href='/logout') 로그아웃
+        // /.navbar-collapse
+      // /.container
+    // Header Carousel
+    // Page Content
+    .container
+      // Page Heading/Breadcrumbs
+      .row
+        .col-lg-12
+          h1.page-header
+      // /.row
+      .row
+        // Blog Entries Column
+        .col-md-8
+          // First Blog Post
+          h2
+           div.subject= article.subject
+          p
+            i.fa.fa-clock-o
+            div.date= article.date
+          hr
+          p
+            div.content= article.content
+            i.fa.fa-angle-right
+          hr
+          // Pager
+          ul.pager
+            li.previous
+              a(href='#') ← Older
+            li.next
+              a(href='#') Newer →
+            // /.row
+      // /.row
+      hr
+      // Footer
+      footer
+        .row
+          .col-lg-12
+            p Copyright © Mentos 2017
+    // /.container
+    // jQuery
+    
+    script(src='javascripts/jquery.js')
+    // Bootstrap Core JavaScript
+    script(src='javascripts/bootstrap.min.js')
