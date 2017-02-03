@@ -1,6 +1,5 @@
 module.exports = function(passport, conn){
 	var sizeof = require('object-sizeof');
-	var sleep = require('sleep');
 	var express = require('express');
 	var router = express.Router();
 
