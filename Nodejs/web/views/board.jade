@@ -45,7 +45,7 @@ html(lang='ko')
                 li
                   a(href='/food') 맛집 추천
             li
-              a(href='/center') 멘탈클리닉 
+              a(href='/consult') 멘탈클리닉
             li
               a(href='/mypage') 마이페이지
             li
@@ -86,19 +86,17 @@ html(lang='ko')
       // In order to set the email address and subject line for the contact form go to the bin/contact_me.php file.
       .row
         .col-md-8
-          form#note(action='/noteProcess', method='post')
+          form#note(action='/board/noteProcess', method='post')
             .control-group.form-group
               .controls
                 label 제목
-                input#title.form-control(type='text')
+                input#title.form-control(type='text' name='title')
                 p.help-block
             .control-group.form-group
               .controls
                 label 오늘의 스토리
-                textarea#content.form-control(rows='10', cols='100', style='resize:none')
+                textarea#content.form-control(rows='10', cols='100', style='resize:none' name='content')
             button.btn.btn-primary(type='submit') 저장
-            &nbsp&nbsp
-            button.btn.btn-primary(type='button') 다다
       // /.row
       hr
       // Footer
