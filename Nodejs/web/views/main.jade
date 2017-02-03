@@ -101,7 +101,11 @@ html(lang='ko')
     script(type='text/javascript').
         $(document).ready(function () {
             var article = JSON.parse($('#jsontext').val());
-            for(var i=0;i<article.length;i++) {
-                $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>'+article[i].c_title+'</h4></div><div class="panel-body"><p>'+article[i].c_content+'</p></div></div></div>');
+            if(article.length > 0) {
+                for (var i = 0; i < article.length; i++) {
+                    $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + article[i].c_title + '</h4></div><div class="panel-body"><p>' + article[i].c_content + '</p></div></div></div>');
+                }
+            } else{
+                $('#board').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
             }
         });
