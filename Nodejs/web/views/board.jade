@@ -59,52 +59,46 @@ html(lang='ko')
       .row
         .col-lg-12
           h1.page-header
-            | 내 노트
-            small  감정노트
+            | 나만의
+            small 감성노트
       // /.row
+      // Content Row
       .row
-        // Blog Entries Column
+        // Map Column
         .col-md-8
-          // First Blog Post
-          h2
-            a(href='#') 아 기분 좋다
-          p.lead
-            | by 
-            a(href='index.php') 김서준
-          p
-            i.fa.fa-clock-o
-            |  Posted on August 28, 2017 at 10:00 PM
-          hr
-          p
-            | 오늘은 금요일이다. 기분이 너무너무 좋다.
-          a.btn.btn-primary(href='#')
-            | Read More 
-            i.fa.fa-angle-right
-          hr
-          // Pager
-          ul.pager
-            li.previous
-              a(href='#') ← Older
-            li.next
-              a(href='#') Newer →
-        // Blog Sidebar Widgets Column
+        // Contact Details Column
         .col-md-4
-          // Blog Categories Well
-          .well
-            h4 감정별 노트
-            .row
-              .col-lg-6
-                ul.list-unstyled
-                  li
-                    a(href='#') 기쁨
-                  li
-                    a(href='#') 슬픔
-                  li
-                    a(href='#') 분노
-                  li
-                    a(href='#') 우울
-              
-            // /.row
+      // /.row
+      script(type='text/javascript').
+          var d = new Date();
+          function getTodayLabel() {
+              var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
+              var today = new Date().getDay();
+              var todayLabel = week[today];
+              return todayLabel;
+          }
+          document.write(d.getFullYear() + '.');
+          document.write((d.getMonth() + 1) + '.');
+          document.write(d.getDate());
+          document.write('  요일: ' + getTodayLabel() + '<br />'); // 일요일 = 0
+          document.write('<br />');
+      // Contact Form
+      // In order to set the email address and subject line for the contact form go to the bin/contact_me.php file.
+      .row
+        .col-md-8
+          form#note(action='/noteProcess', method='post')
+            .control-group.form-group
+              .controls
+                label 제목
+                input#title.form-control(type='text')
+                p.help-block
+            .control-group.form-group
+              .controls
+                label 오늘의 스토리
+                textarea#content.form-control(rows='10', cols='100', style='resize:none')
+            button.btn.btn-primary(type='submit') 저장
+            &nbsp&nbsp
+            button.btn.btn-primary(type='button') 다다
       // /.row
       hr
       // Footer

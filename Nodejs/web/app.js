@@ -35,13 +35,7 @@ var conn = mysql.createConnection({
 // mysql 연결
 conn.connect();
 
-// mongoDB 설정
-var url = 'mongodb://localhost:27017/mentos';
-var dbObj = null;
-MongoClient.connect(url, function(err, db) {
-    console.log("Connected correctly to MongoDB server");
-    dbObj = db;
-});
+
 
 // 세션 설정
 app.use(session({
@@ -109,7 +103,7 @@ passport.use(new LocalStrategy( // 로컬에서 로그인 처리하기 위한 �
 ));
 
 var index = require('./routes/index')(passport, conn);
-var main = require('./routes/main')(passport, app);
+var main = require('./routes/main')(MongoClient);
 var board = require('./routes/board');
 var movie = require('./routes/movie');
 var food = require('./routes/food');
