@@ -11,6 +11,7 @@ var passport = require('passport');
 var flash = require('connect-flash');
 var LocalStrategy = require('passport-local').Strategy;
 var MongoClient = require('mongodb').MongoClient;
+
 var R = require('r-script');
 
 var app = express();
@@ -29,7 +30,7 @@ var mysql = require('mysql');
 var conn = mysql.createConnection({
 	host	: 'localhost', // 주소
 	user	: 'root', // 사용자
-	password: 'mentos1234', // 비밀번호
+	password: 'root', // 비밀번호
 	database: 'mentos' // db이름
 });
 // mysql 연결
@@ -46,7 +47,7 @@ app.use(session({
 		host	: 'localhost', // db주소
 		port 	: 3306, // db포트
 		user	: 'root', // 사용자
-		password: 'mentos1234', // 비밀번호
+		password: 'root', // 비밀번호
 		database: 'mentos' // db이름
 	})
 }));
@@ -103,12 +104,11 @@ passport.use(new LocalStrategy( // 로컬에서 로그인 처리하기 위한 �
 ));
 
 var index = require('./routes/index')(passport, conn);
-var main = require('./routes/main')(MongoClient);
-var board = require('./routes/board')(MongoClient);
+var main = require('./routes/main');
+var board = require('./routes/board');
 var movie = require('./routes/movie');
 var food = require('./routes/food');
 var consult = require('./routes/consult')(passport, app, conn);
-var mypage = require('./routes/mypage');
 
 
 
@@ -130,7 +130,6 @@ app.use('/board', board);
 app.use('/movie', movie);
 app.use('/food', food);
 app.use('/consult', consult);
-app.use('/mypage', mypage);
 
 // catch 404 and forward to error handler
 app.use(function(req, res, next) {

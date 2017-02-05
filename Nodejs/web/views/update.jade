@@ -1,0 +1,277 @@
+doctype html
+html(lang='ko')
+  head
+    meta(charset='utf-8')
+    meta(http-equiv='X-UA-Compatible', content='IE=edge')
+    meta(name='viewport', content='width=device-width, initial-scale=1')
+    meta(name='description', content='')
+    meta(name='author', content='')
+    title MENTal Of uS
+    // Bootstrap Core CSS
+    link(href='../stylesheets/bootstrap.min.css', rel='stylesheet')
+    // Custom CSS
+    link(href='../stylesheets/modern-business.css', rel='stylesheet')
+    // Custom Fonts
+    link(href='../font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
+    // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
+    // WARNING: Respond.js doesn't work if you view the page via file://
+    //if lt IE 9
+      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    // All the files that are required
+    link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
+    link(href='http://fonts.googleapis.com/css?family=Varela+Round', rel='stylesheet', type='text/css')
+    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js')
+    meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
+    // ajax
+    script(src='https://code.jquery.com/jquery-1.10.2.js')
+    script(src='//code.jquery.com/jquery-1.11.0.min.js')
+    script(src='../dist/sweetalert.min.js')
+    link(rel='stylesheet', type='text/css', href='../dist/sweetalert.css')
+    script(src="/socket.io/socket.io.js")
+    script(type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+
+  body
+    // Navigation
+    nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
+      .container
+        // Brand and toggle get grouped for better mobile display
+        .navbar-header
+          button.navbar-toggle(type='button', data-toggle='collapse', data-target='#bs-example-navbar-collapse-1')
+            span.sr-only Toggle navigation
+            span.icon-bar
+            span.icon-bar
+            span.icon-bar
+          a.navbar-brand(href='/login') Mentos
+        // Collect the nav links, forms, and other content for toggling
+        #bs-example-navbar-collapse-1.collapse.navbar-collapse
+          ul.nav.navbar-nav.navbar-right
+            li
+              a(href='/board') 내 노트
+            li.dropdown
+              a.dropdown-toggle(href='#', data-toggle='dropdown')
+                | 추천
+                b.caret
+              ul.dropdown-menu
+                li
+                  a(href='/login') 영화 추천
+                li
+                  a(href='/login') 맛집 추천
+                li
+                  a(href='/login') 상담소
+            li
+              a(href='/login') 마이페이지
+        // /.navbar-collapse
+      // /.container
+    
+    // Page Content
+    .container
+      // Marketing Icons Section
+      .row
+        .col-lg-12
+          h1.page-header
+            | 회원정보수정
+
+      // /.row
+      // Where all the magic happens
+      // REGISTRATION FORM
+      .text-center(style='padding:50px 0;border-left-width: 50px;')
+        // Main Form
+        .login-form-1
+          form#register-form.text-left(action='/signin' method='post')
+            .login-form-main-message
+            .main-login-form
+              .login-group
+                input#c_no(type='hidden', value='#{c_no}')
+                .form-group
+                  label.sr-only(for='reg_email') 이메일
+                  input#reg_email.form-control(type='text', name='reg_email', placeholder='이메일')
+                  font(color='red' id='emptyEmail')
+                  font(color='green' id='trueEmail' value=0)
+                .form-group
+                  label.sr-only(for='reg_password') 비밀번호
+                  input#reg_password.form-control(type='password', name='reg_password', placeholder='비밀번호')
+                  font(color='red' id='emptyPassword')
+                .form-group
+                  label.sr-only(for='reg_password_confirm') 비밀번호 확인
+                  input#reg_password_confirm.form-control(type='password', name='reg_password_confirm', placeholder='비밀번호 확인')
+                  font(color='red' id='emptyPasswordConfirm')
+                .form-group
+                  label.sr-only(for='reg_name') 이름
+                  input#reg_name.form-control(type='text', name='reg_name', placeholder='이름')
+                  font(color='red' id='emptyName')
+                .form-group
+                  label.sr-only(for='reg_nickname') 닉네임
+                  input#reg_nickname.form-control(type='text', name='reg_nickname', placeholder='닉네임')
+                  font(color='red' id='emptyNickname')
+                .form-group
+                  select#reg_age.form-control(name='reg_age')
+                    option(value=10) 10대
+                    option(value=20) 20대
+                    option(value=30) 30대
+                    option(value=40) 40대
+                    option(value=50) 50대
+                  font(color='red' id='emptyAge')
+                .form-group.login-group-checkbox
+                  input#male(type='radio', name='reg_gender', placeholder='남성', value='m')
+                  label(for='male') 남성
+                  input#female(type='radio', name='reg_gender', value='f',placeholder='여성')
+                  label(for='female') 여성
+                  font(color='red' id='emptyGender')
+                .form-group
+                  label 비밀번호 찾기위한 질문
+                  select#reg_age.form-control(name='reg_question')
+                    option(value=1) 나의 고향은?
+                    option(value=2) 내 별명은?
+                    option(value=3) 내가 처음 키운 애완동물 이름은?
+                    option(value=4) 내가 좋아하는 가수는?
+                    option(value=5) 나의 좌우명은?
+                  font(color='red' id='emptyQuestion')
+                .form-group
+                  label.sr-only(for='reg_answer') 답
+                  input#reg_answer.form-control(type='text', name='reg_answer', placeholder='답')
+                  font(color='red' id='emptyAnswer')
+              button#regSub.btn-primary(type='button') 수정하기
+            
+        // end:Main Form
+      hr
+      // Footer
+      footer
+        .row
+          .col-lg-12
+            p Copyright © Mentos 2017
+    // /.container
+    // jQuery
+    script(src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js')
+    script(src='http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/bootstrap.min.js')
+    script(src='../javascripts/jquery.js')
+    // Bootstrap Core JavaScript
+    script(src='../javascripts/bootstrap.min.js')
+    
+    script(type="text/javascript").
+      $("#reg_nickname").focusout(function(){
+        if(!($("#reg_nickname").val()))
+          $("#emptyNickname").text("  닉네임을 입력하세요");
+      else
+        $("#emptyNickname").text(" ");
+      });
+      $("#reg_answer").focusout(function(){
+        if(!($("#reg_nickname").val()))
+          $("#emptyAnswer").text("  답을 입력하세요");
+      else
+        $("#emptyAnswer").text(" ");
+      });
+      $("#reg_name").focusout(function(){
+        if(!($("#reg_name").val()))
+          $("#emptyName").text("  이름을 입력하세요");
+      else
+        $("#emptyName").text(" ");
+      });
+      $("#reg_email").focusout(function(){
+        if(!($("#reg_email").val())) {
+            $("#trueEmail").text(" ");
+            $("#emptyEmail").text("  이메일을 입력하세요");
+        }
+        else {
+            $("#emptyEmail").text(" ");
+            $.ajax({
+              url:"/duplEmail",
+              dataType:"jsonp",
+              type:"POST",
+              data:$("#register-form").serialize(),
+              success:function(data){
+                if(data.result) {
+                    $("#emptyEmail").text(" ");
+                    $("#trueEmail").text(data.msg);
+                }
+                else {
+                    $("#trueEmail").text(" ");
+                    $("#emptyEmail").text(data.msg);
+                }
+              },
+              error:function(request,status,error){
+                alert('코드:'+request.status+'\n'+'메세지:'+request.responseText+'\n'+'에러:'+error);
+              }
+            });
+        }
+      });
+      $("#reg_password").focusout(function(){
+        if(!($("#reg_password").val()))
+          $("#emptyPassword").text("  비밀번호를 입력하세요");
+        else {
+          $("#emptyPassword").text(" ");
+          if($("#reg_password").val()!=$("#reg_password_confirm").val())
+            $("#emptyPasswordConfirm").text("  입력한 비밀번호가 같지 않습니다");
+          else
+            $("#emptyPasswordConfirm").text(" ");
+        }
+      });
+      $("#reg_password_confirm").focusout(function(){
+        if(!($("#reg_password_confirm").val()))
+          $("#emptyPasswordConfirm").text("  비밀번호를 입력하세요");
+        else {
+          $("#emptyPasswordConfirm").text(" ");
+          if($("#reg_password").val()!=$("#reg_password_confirm").val())
+            $("#emptyPasswordConfirm").text("  입력한 비밀번호가 같지 않습니다");
+          else
+            $("#emptyPasswordConfirm").text(" ");
+        }
+      });
+      $(document).ready(function(){
+        var socket = null;
+        $("#regSub").click(function(){
+          socket = io.connect();
+          socket.emit('load_info', JSON.stringify(c_no:$('#c_no').val()));
+            
+          if ($("#reg_password").val() == "") {
+              swal("비밀번호를 입력하세요.","","error");
+              $("#reg_password").focus();
+              return false;
+          }
+          if ($("#reg_password_confirm").val() == "") {
+              swal("비밀번호를 입력하세요.","","error");
+              $("#reg_password_confirm").focus();
+              return false;
+          }
+          if ($("#reg_name").val() == "") {
+              swal("이름을 입력하세요.","","error");
+              $("#reg_name").focus();
+              return false;
+          }
+          if ($("#reg_nickname").val() == "") {
+              swal("닉네임을 입력하세요.","","error");
+              $("#reg_nickname").focus();
+              return false;
+          }
+          if ($("#reg_answer").val() == "") {
+              swal("답을 입력하세요.","","error");
+              $("#reg_answer").focus();
+              return false;
+          }
+          if ($("#male").checked == true || $("#female").checked == true) {
+              swal('성별을 선택하세요.','','error');
+              return false;
+          }
+          if($("#reg_password").val()!=$("#reg_password_confirm").val()) {
+              swal('비밀번호가 같지 않습니다.','','error');
+              $("#reg_password_confirm").focus();
+              return false;
+          }
+          $.ajax({
+            url:"/signinProcess",
+            dataType:"jsonp",
+            type:"POST",
+            data:$("#register-form").serialize(),
+            success:function(data){
+                if(data.result)
+                    swal(data.msg,"","success");
+                else
+                    swal(data.msg,'','error');
+            },
+            error:function(request,status,error){
+              alert('코드:'+request.status+'\n'+'메세지:'+request.responseText+'\n'+'에러:'+error);
+            }
+          });
+
+        });
+      });

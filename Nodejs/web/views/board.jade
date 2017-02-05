@@ -16,8 +16,11 @@ html(lang='ko')
     // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
     // WARNING: Respond.js doesn't work if you view the page via file://
     //if lt IE 9
-      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+
+    script(src="/socket.io/socket.io.js")
+    script(type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
   body
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
       .container
@@ -69,24 +72,17 @@ html(lang='ko')
         // Contact Details Column
         .col-md-4
       // /.row
-      script(type='text/javascript').
-          var d = new Date();
-          function getTodayLabel() {
-              var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
-              var today = new Date().getDay();
-              var todayLabel = week[today];
-              return todayLabel;
-          }
-          document.write(d.getFullYear() + '.');
-          document.write((d.getMonth() + 1) + '.');
-          document.write(d.getDate());
-          document.write('  요일: ' + getTodayLabel() + '<br />'); // 일요일 = 0
-          document.write('<br />');
+
       // Contact Form
       // In order to set the email address and subject line for the contact form go to the bin/contact_me.php file.
       .row
         .col-md-8
-          form#note(action='/board/noteProcess', method='post')
+          .pull-right
+            p
+              i.fa.fa-clock-o
+              label#date
+          .div
+            input#c_no(type='hidden', value='#{c_no}')
             .control-group.form-group
               .controls
                 label 제목
@@ -96,7 +92,7 @@ html(lang='ko')
               .controls
                 label 오늘의 스토리
                 textarea#content.form-control(rows='10', cols='100', style='resize:none' name='content')
-            button.btn.btn-primary(type='submit') 저장
+            button.btn.btn-primary(id='insert') 저장
       // /.row
       hr
       // Footer
@@ -110,3 +106,28 @@ html(lang='ko')
     script(src='javascripts/jquery.js')
     // Bootstrap Core JavaScript
     script(src='javascripts/bootstrap.min.js')
+    script(type='text/javascript').
+      var socket = null;
+
+      $(document).ready(function(){
+        socket = io.connect();
+        var d = new Date();
+        var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
+        var today = new Date().getDay();
+        var todayLabel = week[today];          
+        var date = d.getFullYear() + '/' + (d.getMonth() + 1) + '/' + d.getDate() + todayLabel;
+        $('#date').text(date);
+        $('#insert').click(function(){          
+          console.log($('#c_no').val());
+          console.log($('#title').val());
+          console.log($('#content').val());
+          console.log(date);
+          var result = confirm("저장하시겠습니까?");
+          if(result){
+            socket.emit('insert_note', JSON.stringify({c_no:Number($('#c_no').val()), c_title:$('#title').val(), c_content:$('#content').val(), created_at:date}));
+            location.href='/main';
+          }
+        });
+
+      });
+      

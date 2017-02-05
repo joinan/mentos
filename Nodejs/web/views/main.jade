@@ -21,12 +21,11 @@ html(lang='ko')
     // All the files that are required
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
     link(href='http://fonts.googleapis.com/css?family=Varela+Round', rel='stylesheet', type='text/css')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
     script(src='dist/sweetalert.min.js')
     link(rel='stylesheet', type='text/css', href='dist/sweetalert.css')
-
-
+    script(src="/socket.io/socket.io.js")
+    script(type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
 
   body
     // Navigation
@@ -80,9 +79,10 @@ html(lang='ko')
             | 지친 현대인들을 위한 멘탈 클리닉
           ol.breadcrumb
             | #{name}님 안녕하세요
-        input#jsontext(type='hidden', value='#{jsontext}')
-        input#success(type='hidden', value='true')
-        #board
+          input#jsontext(type='hidden', value='#{jsontext}')
+          input#c_no(type='hidden', value='#{c_no}')
+          input#success(type='hidden', value='true')
+          #board
 
 
       // Footer
@@ -92,7 +92,8 @@ html(lang='ko')
             p Copyright © Mentos 2017
     // /.container
     // jQuery
-    
+    script(src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js')
+    script(src='http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/bootstrap.min.js')
     script(src='javascripts/jquery.js')
     // Bootstrap Core JavaScript
     script(src='javascripts/bootstrap.min.js')
@@ -102,16 +103,33 @@ html(lang='ko')
       interval: 5000 //changes the speed
       });
     script(type='text/javascript').
-        $(document).ready(function () {
-            swal("환영합니다", "", "success");
-
-
-            var article = JSON.parse($('#jsontext').val());
-            if(article.length > 0) {
-                for (var i = 0; i < article.length; i++) {
-                    $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + article[i].c_title + '</h4></div><div class="panel-body"><p>' + article[i].c_content + '</p></div></div></div>');
-                }
-            } else{
-                $('#board').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
+      swal("환영합니다", "", "success");
+      var socket = null;
+      $(document).ready(function () {
+        socket = io.connect();
+        socket.emit('load_note', JSON.stringify({c_no:Number($('#c_no').val())}));
+        socket.on('load_note', function(data){
+          data = JSON.parse(data);
+          if(data.length > 0){
+            for(var i = 0; i < data.length; i++){
+              $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + data[i].c_title + 
+                '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i]._id + '"></i></div></h4></div><div class="panel-body"><p>' + data[i].c_content + 
+                '</p></div></div></div>');
             }
+            $('i').click(function(){
+            var result = confirm('정말로 삭제하시겠습니까?');
+            if(result){
+              socket.emit('delete_note', JSON.stringify({_id:$(this).attr('name')}));
+              location.href="/main";
+            }
+          
         });
+          }else{
+            $('#board').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
+          }
+        });
+        
+        
+      });
+
+      
