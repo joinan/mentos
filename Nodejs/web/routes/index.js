@@ -2,6 +2,7 @@ module.exports = function(passport, conn){
 	var sizeof = require('object-sizeof');
 	var express = require('express');
 	var router = express.Router();
+	var R = require('r-script');
 
 	/* GET home page. */
 	router.get('/', function(req, res, next) {
