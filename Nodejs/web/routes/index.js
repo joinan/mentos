@@ -140,6 +140,9 @@ module.exports = function(passport, conn){
 	// });
 
 	router.get('/findpw', function(req, res){
+		// R("sentiment.R").data({number:12}).call(function(err, d){
+		// 	console.log(d);
+		// });
 		res.render('findpw');
 	});
 
