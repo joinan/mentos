@@ -108,7 +108,7 @@ var main = require('./routes/main');
 var board = require('./routes/board');
 var movie = require('./routes/movie');
 var food = require('./routes/food');
-var consult = require('./routes/consult')(passport, app, conn);
+var consult = require('./routes/consult');
 
 
 

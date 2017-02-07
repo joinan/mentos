@@ -18,6 +18,26 @@ html(lang='ko')
     //if lt IE 9
       script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
       script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+      script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+      script(src='/socket.io/socket.io.js')
+      script(type='text/javascript').
+        var socket=null;
+        $(document).ready(function(){//callback 함수
+        socket = io.connect();//server에 접속 시동
+        socket.on('insert_consult',function(data){
+        location.href='consult';
+        });
+        $('#insert').click(function(){          
+        var result = confirm("저장하시겠습니까?");
+        if(result){
+        var created = new Date();
+        var consultContent=$('#consultContent').val();
+        var c_no=Number($('#c_no').val());
+        socket.emit('insert_consult',JSON.stringify({consultContent:consultContent,c_no:c_no,created:created}));
+        }
+        }
+        });
+        
   body
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
       .container
@@ -59,20 +79,14 @@ html(lang='ko')
       .row
         .col-lg-12
           h1.page-header
-      // /.row
-      .row
-        // Blog Entries Column
-        .col-md-8
-          // First Blog Post
-          h2
-           div.subject= article.subject
-          p
-            i.fa.fa-clock-o
-            div.date= article.date
-          hr
-          p
-            div.content= article.content
-            i.fa.fa-angle-right
+           .panel.panel-default
+            .panel-heading
+                h4
+                  | dfdf
+           .controls
+                input#consultContent.form-control(type='textarea' name='consultContent')
+                input#c_no(type='hidden' value='#{c_no}')
+            button.btn.btn-primary(id='insert') 저장
           hr
           // Pager
           ul.pager

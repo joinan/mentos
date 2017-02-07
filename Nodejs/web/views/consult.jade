@@ -18,6 +18,20 @@ html(lang='ko')
     //if lt IE 9
       script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
       script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+      script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+      script(src='/socket.io/socket.io.js')
+      script(type='text/javascript').
+        var socket = null;
+        $(document).ready(function() {//callback 함수
+        socket = io.connect();//server에 접속 시동
+        socket.emit('load_consult',JSON.stringify({c_no:#{name}));
+        socket.on('consult_list',function(data){//서버가 주는 article리스트 받는 부분
+        data = JSON.parse(data);
+        for (var i = 0; i < data.length; i++) {
+         $('#consult_list').append('<a href="/consultdetail?no='+data[i].no+'">'+data[i].title+'</a>&nbsp;');
+        }
+        });
+        });
   body
     // Navigation
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
@@ -62,21 +76,20 @@ html(lang='ko')
             | 상담내역
            .container
             .row
-            - each article in articles
                 .col-md-4
                     .panel.panel-default
                         .panel-heading
                             h4
                                 i.fa.fa-fw.fa-check
                                 |  
-                                a(href='/consult/#{article.no}') #{article.subject}
+                                ul#article_list
                         |                     
                         .panel-body
                             p 
-                            a(href='/consult/#{article.no}') #{article.content}
+                            //a(href='/consult/#{article.no}') #{article.content}
 
       hr
-      a.btn.btn-default(href='/consultwrite') 글쓰기
+      a.btn.btn-default(href='consultdetail') 글쓰기
       // Footer
       footer
         .row
@@ -90,6 +103,6 @@ html(lang='ko')
     // Bootstrap Core JavaScript
     script(src='javascript/bootstrap.min.js')
     // Contact Form JavaScript
-    // Do not edit these files! In order to set the email address and subject line for the contact form go to the bin/contact_me.php file.
+    // Do not edit these files! In order to set the e	mail address and subject line for the contact form go to the bin/contact_me.php file.
     script(src='js/jqBootstrapValidation.js')
     script(src='js/contact_me.js')

@@ -1,0 +1,26 @@
+<script type="text/javascript"
+	src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js">
+	
+</script>
+<script src="/socket.io/socket.io.js"></script>
+<script type="text/javascript">
+	$.urlParam = function(name) {
+		var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)')
+				.exec(window.location.href);
+		return results[1] || 0;
+	}
+	var no = $.urlParam('c_no');
+	console.log(c_no);
+
+	var socket = null;
+	$(document).ready(function() {//callback 함수
+		socket = io.connect();//server에 접속 시동
+		socket.emit('load_consult',JSON.stringify({c_no:Number(c_no)}));
+		socket.on('consult_list',function(data){//서버가 주는 article리스트 받는 부분
+			data = JSON.parse(data);
+			for (var i = 0; i < data.length; i++) {
+				$('#consult_list').append(data[i].title+'</a>&nbsp;');
+			}
+		});
+	});
+</script>
