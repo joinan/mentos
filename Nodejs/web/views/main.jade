@@ -64,7 +64,7 @@ html(lang='ko')
       // /.container
     // Header Carousel
     header#myCarousel.carousel.slide
-      
+
       // Wrapper for slides
       .carousel-inner
         .item.active
@@ -99,37 +99,37 @@ html(lang='ko')
     script(src='javascripts/bootstrap.min.js')
     // Script to Activate the Carousel
     script.
-      $('.carousel').carousel({
-      interval: 5000 //changes the speed
-      });
+        $('.carousel').carousel({
+            interval: 5000 //changes the speed
+        });
     script(type='text/javascript').
-      swal("환영합니다", "", "success");
-      var socket = null;
-      $(document).ready(function () {
-        socket = io.connect();
-        socket.emit('load_note', JSON.stringify({c_no:Number($('#c_no').val())}));
-        socket.on('load_note', function(data){
-          data = JSON.parse(data);
-          if(data.length > 0){
-            for(var i = 0; i < data.length; i++){
-              $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + data[i].c_title + 
-                '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i]._id + '"></i></div></h4></div><div class="panel-body"><p>' + data[i].c_content + 
-                '</p></div></div></div>');
-            }
-            $('i').click(function(){
-            var result = confirm('정말로 삭제하시겠습니까?');
-            if(result){
-              socket.emit('delete_note', JSON.stringify({_id:$(this).attr('name')}));
-              location.href="/main";
-            }
-          
-        });
-          }else{
-            $('#board').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
-          }
-        });
-        
-        
-      });
+        var socket = null;
+        $(document).ready(function () {
+            socket = io.connect();
+            socket.emit('load_note', JSON.stringify({c_no:Number($('#c_no').val())}));
+            socket.on('load_note', function(data){
+                data = JSON.parse(data);
+                if(data.length > 0){
+                    for(var i = 0; i < data.length; i++){
+                        $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + data[i].c_title +
+                            '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i]._id + '"></i></div></h4></div><div class="panel-body"><p>' + data[i].c_content +
+                            '</p><button class="btn btn-default" name="' + data[i]._id + '">분석</button></div></div></div>');
+                    }
+                    $('i').click(function(){
+                        var result = confirm('정말로 삭제하시겠습니까?');
+                        if(result){
+                            socket.emit('delete_note', JSON.stringify({_id:$(this).attr('name')}));
+                            location.href="/main";
+                        }
 
-      
+                    });
+                    $('button').click(function () {
+                        socket.emit('sentiment', JSON.stringify({_id: $(this).attr('name')}));
+                    });
+                }else{
+                    $('#board').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
+                }
+            });
+
+
+        });

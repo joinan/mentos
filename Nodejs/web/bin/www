@@ -11,7 +11,8 @@
 var app = require('../app');
 var debug = require('debug')('web:server');
 var http = require('http');
-
+var R = require('r-script');
+var exec = require('child_process').exec;
 /**
  * Get port from environment and store in Express.
  */
@@ -51,6 +52,7 @@ io.sockets.on('connection', function(socket){
 
   socket.on('delete_note', function(data){
     data = JSON.parse(data);
+    console.log("@@@@@@@@@@@");
     mentos.remove({_id:ObjectID.createFromHexString(data._id)}, function(err, result){
       socket.emit('delete_note', JSON.stringify(result));
     });
@@ -60,8 +62,8 @@ io.sockets.on('connection', function(socket){
     data = JSON.parse(data);
     mentos.find({c_no:data.c_no}).toArray(function(err, results){
       socket.emit('load_note', JSON.stringify(results));
-    })
-  })
+    });
+  });
 
   socket.on('insert_note', function(data){
     data = JSON.parse(data);
@@ -73,6 +75,7 @@ io.sockets.on('connection', function(socket){
       }
     });
 
+
   });
   
   socket.on('load_consult', function(data){
@@ -80,7 +83,7 @@ io.sockets.on('connection', function(socket){
 	    mentos.find({c_no:data.c_no}).toArray(function(err, results){
 	      socket.emit('consult_list', JSON.stringify(results));
 	    });
-	  });
+  });
   
   socket.on('insert_consult', function(data){
 	    data = JSON.parse(data);
@@ -92,7 +95,19 @@ io.sockets.on('connection', function(socket){
 	      }
 	    });
 
-	  });
+  });
+
+  socket.on('sentiment', function(data){
+      data = JSON.parse(data);
+      var cmd = 'Rscript ./r/sentiment.R ' + data._id.toString();
+      exec(cmd, function(err, stdout, stderr){
+          if (err) {
+              console.error(err);
+              return;
+          }
+          console.log(stdout);
+      });
+  });
   
 });
 
