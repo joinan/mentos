@@ -113,17 +113,23 @@ module.exports = function(passport, conn){
 
 	router.post('/signinProcess', function(req, res){
       	var sql = 'INSERT INTO client_info set ?';
+      	var c_doc = 1;
+      	if(req.body.c_doc == null){
+      		c_doc = 0;
+      	}
       	conn.query(sql, {
 			c_email		:req.body.reg_email,
 			c_pw		:req.body.reg_password,
 			c_name		:req.body.reg_name,
 			c_nickname	:req.body.reg_nickname,
 			c_gender	:req.body.reg_gender,
-			c_age	:req.body.reg_age,
+			c_age		:req.body.reg_age,
 			c_question	:req.body.reg_question,
-			c_answer	:req.body.reg_answer
+			c_answer	:req.body.reg_answer,
+			c_doc 		:c_doc
 		}, function(err, results){
         	if(err){
+        		console.log(err);
           		res.jsonp({result:false,msg:'회원가입에 실패했습니다.'});
         	} else {
           		res.jsonp({result:true,msg:'회원가입에 성공했습니다.'});

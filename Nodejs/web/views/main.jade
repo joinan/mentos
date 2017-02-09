@@ -16,8 +16,8 @@ html(lang='ko')
     // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
     // WARNING: Respond.js doesn't work if you view the page via file://
     //if lt IE 9
-      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
     // All the files that are required
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
     link(href='http://fonts.googleapis.com/css?family=Varela+Round', rel='stylesheet', type='text/css')
@@ -79,7 +79,6 @@ html(lang='ko')
             | 지친 현대인들을 위한 멘탈 클리닉
           ol.breadcrumb
             | #{name}님 안녕하세요
-          input#jsontext(type='hidden', value='#{jsontext}')
           input#c_no(type='hidden', value='#{c_no}')
           input#success(type='hidden', value='true')
           #board
@@ -119,7 +118,7 @@ html(lang='ko')
                 data = JSON.parse(data);
                 if(data.length > 0){
                     for(var i = 0; i < data.length; i++){
-                        $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + data[i].c_title +
+                        $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-pencil-square-o"></i>' + data[i].c_title +
                             '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i]._id + '"></i></div></h4></div><div class="panel-body"><p>' + data[i].c_content +
                             '</p><a href="javascript:analysis(\''+data[i]._id+'\')" class="btn btn-default">분석</a></div></div></div>');
                     }

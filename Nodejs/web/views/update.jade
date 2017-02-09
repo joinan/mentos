@@ -21,7 +21,6 @@ html(lang='ko')
     // All the files that are required
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
     link(href='http://fonts.googleapis.com/css?family=Varela+Round', rel='stylesheet', type='text/css')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
     // ajax
     script(src='https://code.jquery.com/jquery-1.10.2.js')
@@ -42,7 +41,7 @@ html(lang='ko')
             span.icon-bar
             span.icon-bar
             span.icon-bar
-          a.navbar-brand(href='/login') Mentos
+          a.navbar-brand(href='/mypage') Mentos
         // Collect the nav links, forms, and other content for toggling
         #bs-example-navbar-collapse-1.collapse.navbar-collapse
           ul.nav.navbar-nav.navbar-right
@@ -54,13 +53,13 @@ html(lang='ko')
                 b.caret
               ul.dropdown-menu
                 li
-                  a(href='/login') 영화 추천
+                  a(href='/movie') 영화 추천
                 li
-                  a(href='/login') 맛집 추천
+                  a(href='/food') 맛집 추천
                 li
-                  a(href='/login') 상담소
+                  a(href='/consult') 상담소
             li
-              a(href='/login') 마이페이지
+              a(href='/logout') 로그아웃
         // /.navbar-collapse
       // /.container
     
@@ -70,6 +69,7 @@ html(lang='ko')
       .row
         .col-lg-12
           h1.page-header
+            i.fa.fa-pencil-square-o
             | 회원정보수정
 
       // /.row
@@ -78,31 +78,31 @@ html(lang='ko')
       .text-center(style='padding:50px 0;border-left-width: 50px;')
         // Main Form
         .login-form-1
-          form#register-form.text-left(action='/signin' method='post')
+          form#register-form.text-left(action='/update' method='post')
             .login-form-main-message
             .main-login-form
               .login-group
                 input#c_no(type='hidden', value='#{c_no}')
                 .form-group
                   label.sr-only(for='reg_email') 이메일
-                  input#reg_email.form-control(type='text', name='reg_email', placeholder='이메일')
+                  input#reg_email.form-control(type='text', name='reg_email')
                   font(color='red' id='emptyEmail')
                   font(color='green' id='trueEmail' value=0)
                 .form-group
                   label.sr-only(for='reg_password') 비밀번호
-                  input#reg_password.form-control(type='password', name='reg_password', placeholder='비밀번호')
+                  input#reg_password.form-control(type='password', name='reg_password', placeholder='변경할 비밀번호')
                   font(color='red' id='emptyPassword')
                 .form-group
                   label.sr-only(for='reg_password_confirm') 비밀번호 확인
-                  input#reg_password_confirm.form-control(type='password', name='reg_password_confirm', placeholder='비밀번호 확인')
+                  input#reg_password_confirm.form-control(type='password', name='reg_password_confirm', placeholder='변경할 비밀번호 확인')
                   font(color='red' id='emptyPasswordConfirm')
                 .form-group
                   label.sr-only(for='reg_name') 이름
-                  input#reg_name.form-control(type='text', name='reg_name', placeholder='이름')
+                  input#reg_name.form-control(type='text', name='reg_name')
                   font(color='red' id='emptyName')
                 .form-group
                   label.sr-only(for='reg_nickname') 닉네임
-                  input#reg_nickname.form-control(type='text', name='reg_nickname', placeholder='닉네임')
+                  input#reg_nickname.form-control(type='text', name='reg_nickname')
                   font(color='red' id='emptyNickname')
                 .form-group
                   select#reg_age.form-control(name='reg_age')
@@ -113,14 +113,17 @@ html(lang='ko')
                     option(value=50) 50대
                   font(color='red' id='emptyAge')
                 .form-group.login-group-checkbox
-                  input#male(type='radio', name='reg_gender', placeholder='남성', value='m')
+                  input#male(type='radio', name='reg_gender', value='m')
                   label(for='male') 남성
-                  input#female(type='radio', name='reg_gender', value='f',placeholder='여성')
+                  input#female(type='radio', name='reg_gender', value='f')
                   label(for='female') 여성
                   font(color='red' id='emptyGender')
                 .form-group
+                  input(type="checkbox", id="doc")
+                  label 의사
+                .form-group
                   label 비밀번호 찾기위한 질문
-                  select#reg_age.form-control(name='reg_question')
+                  select#reg_question.form-control(name='reg_question')
                     option(value=1) 나의 고향은?
                     option(value=2) 내 별명은?
                     option(value=3) 내가 처음 키운 애완동물 이름은?
@@ -129,9 +132,11 @@ html(lang='ko')
                   font(color='red' id='emptyQuestion')
                 .form-group
                   label.sr-only(for='reg_answer') 답
-                  input#reg_answer.form-control(type='text', name='reg_answer', placeholder='답')
+                  input#reg_answer.form-control(type='text', name='reg_answer')
                   font(color='red' id='emptyAnswer')
-              button#regSub.btn-primary(type='button') 수정하기
+              button#regSub.btn.btn-primary(type='button') 수정하기
+              .pull-right
+                a.btn.btn-primary(href='/mypage') 뒤로가기
             
         // end:Main Form
       hr
@@ -219,10 +224,28 @@ html(lang='ko')
       });
       $(document).ready(function(){
         var socket = null;
+        socket = io.connect();
+        socket.emit('load_info', JSON.stringify({c_no:Number($('#c_no').val())}));
+        socket.on('load_info', function(data){
+          data = JSON.parse(data);
+          if(data){
+            $('#reg_email').val(data.c_email);
+            $('#reg_name').val(data.c_name);
+            $('#reg_nickname').val(data.c_nickname);
+            if(data.c_gender === "m"){
+              $('#male').prop("checked",true);
+            }else{
+              $('#female').prop("checked",true);
+            }
+            $('#reg_age').val(Number(data.c_age));
+            $('#reg_question').val(Number(data.c_question));
+            $('#reg_answer').val(data.c_answer);
+            if(data.c_doc === 1){
+              $('#doc').prop("checked",true);
+            }
+          }
+        });
         $("#regSub").click(function(){
-          socket = io.connect();
-          socket.emit('load_info', JSON.stringify(c_no:$('#c_no').val()));
-            
           if ($("#reg_password").val() == "") {
               swal("비밀번호를 입력하세요.","","error");
               $("#reg_password").focus();
@@ -257,21 +280,6 @@ html(lang='ko')
               $("#reg_password_confirm").focus();
               return false;
           }
-          $.ajax({
-            url:"/signinProcess",
-            dataType:"jsonp",
-            type:"POST",
-            data:$("#register-form").serialize(),
-            success:function(data){
-                if(data.result)
-                    swal(data.msg,"","success");
-                else
-                    swal(data.msg,'','error');
-            },
-            error:function(request,status,error){
-              alert('코드:'+request.status+'\n'+'메세지:'+request.responseText+'\n'+'에러:'+error);
-            }
-          });
 
         });
       });

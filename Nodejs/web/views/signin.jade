@@ -21,7 +21,6 @@ html(lang='ko')
     // All the files that are required
     link(rel='stylesheet', href='//maxcdn.bootstrapcdn.com/font-awesome/4.3.0/css/font-awesome.min.css')
     link(href='http://fonts.googleapis.com/css?family=Varela+Round', rel='stylesheet', type='text/css')
-    script(src='https://cdnjs.cloudflare.com/ajax/libs/jquery-validate/1.13.1/jquery.validate.min.js')
     meta(name='viewport', content='width=device-width, initial-scale=1, maximum-scale=1')
     // ajax
     script(src='https://code.jquery.com/jquery-1.10.2.js')
@@ -61,31 +60,20 @@ html(lang='ko')
               a(href='/login') 마이페이지
         // /.navbar-collapse
       // /.container
-    // Header Carousel
-    header#myCarousel.carousel.slide
-      // Indicators
-      ol.carousel-indicators
-        li.active(data-target='#myCarousel', data-slide-to='0')
-        li(data-target='#myCarousel', data-slide-to='1')
-        li(data-target='#myCarousel', data-slide-to='2')
-      // Wrapper for slides
-      .carousel-inner
-        .item.active
-          .fill(style="background-image:url('http://placehold.it/1900x1080&text=MENTal Of uS');")
-      // Controls
+    
     // Page Content
     .container
       // Marketing Icons Section
       .row
         .col-lg-12
           h1.page-header
-            | 지친 현대인들을 위한 멘탈 클리닉
+            i.fa.fa-sign-in
+            | 회원가입
 
       // /.row
       // Where all the magic happens
       // REGISTRATION FORM
       .text-center(style='padding:50px 0;border-left-width: 50px;')
-        .logo 계정 등록
         // Main Form
         .login-form-1
           form#register-form.text-left(action='/signin' method='post')
@@ -128,6 +116,9 @@ html(lang='ko')
                   label(for='female') 여성
                   font(color='red' id='emptyGender')
                 .form-group
+                  input#doc(type='checkbox' name='reg_doc' value='1')
+                  label 의사
+                .form-group
                   label 비밀번호 찾기위한 질문
                   select#reg_age.form-control(name='reg_question')
                     option(value=1) 나의 고향은?
@@ -140,7 +131,7 @@ html(lang='ko')
                   label.sr-only(for='reg_answer') 답
                   input#reg_answer.form-control(type='text', name='reg_answer', placeholder='답')
                   font(color='red' id='emptyAnswer')
-              button#regSub.btn-primary(type='button') 가입하기
+              button#regSub.btn.btn-primary(type='button') 가입하기
             .etc-login-form
               p
                 | 계정 생성을 하셨습니까?
