@@ -108,6 +108,7 @@ html(lang='ko')
    // Bootstrap Core JavaScript
    script(src='javascripts/bootstrap.min.js')
    script.
+
      var d = new Date();
      var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
      var today = new Date().getDay();
@@ -117,7 +118,13 @@ html(lang='ko')
      var socket = null;
      $(document).ready(function () {
          socket = io.connect();
+         $.urlParam = function (name) {
+             var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+             return results[1] || 0;
+         }
+         load($.urlParam('sentiment'));
        });
+
      function load(num){
          socket.emit('load_food', JSON.stringify({"f_emo_no":Number(num)}));
          socket.on('load_food', function (data) {

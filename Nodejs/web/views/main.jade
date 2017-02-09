@@ -110,6 +110,7 @@ html(lang='ko')
                 showConfirmButton: false
             });
         }
+        var sentimentIndex = null;
         var sentimentResult = "분석실패";
         var socket = null;
         $(document).ready(function () {
@@ -121,15 +122,24 @@ html(lang='ko')
                     for(var i = 0; i < data.length; i++){
                         $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-pencil-square-o"></i>' + data[i].c_title +
                             '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i]._id + '"></i></div></h4></div><div class="panel-body"><p>' + data[i].c_content +
-                            '</p><a href="javascript:analysis(\''+data[i]._id+'\')" class="btn btn-default">분석</a></div></div></div>');
+                            '</p><a href="javascript:analysis(\''+data[i]._id+'\')" class="btn btn-default">분석</a><a id="food'+data[i]._id+'"href="/food" style="float:right" class="btn btn-default">음식추천</a>'+
+                            '<a id="movie'+data[i]._id+'" href="/movie" style="float:right" class="btn btn-default">영화추천</a></div></div></div>');
                     }
                     $('i').click(function(){
-                        
-                        var result = confirm('정말로 삭제하시겠습니까?');
-                        if(result){
-                            socket.emit('delete_note', JSON.stringify({_id:$(this).attr('name')}));
-                            location.href="/main";
-                        }
+                        var iid = $(this).attr('name');
+                        swal({
+                                title: "정말로 삭제하시겠습니까?",
+                                text: "복구할 수 없습니다!!",
+                                type: "warning",
+                                showCancelButton: true,
+                                confirmButtonColor: "#DD6B55",
+                                confirmButtonText: "삭제",
+                                closeOnConfirm: false
+                            },
+                            function () {
+                                socket.emit('delete_note', JSON.stringify({_id:iid}));
+                                location.href = "/main";
+                            });
 
                     });
                     $('#btn').click(function () {
@@ -141,12 +151,16 @@ html(lang='ko')
             });
             socket.on('sentiment_result',function(data){
                 var sentimentArray = ["애매모호함","편안함","지루함","행복함","화남","무서움","혐오함","슬픔"];
+                sentimentIndex = data.result;
                 sentimentResult = sentimentArray[data.result];
             });
 
 
         });
         function analysis(id){
+            var foodID = "#food" + id;
+            var movieID = "#movie" + id;
+
             swal({
                     title: "분석하시겠습니까?",
                     text: "9 ~ 10초 정도 소요됩니다",
@@ -158,7 +172,12 @@ html(lang='ko')
                 function () {
                     setTimeout(function () {
                         swal(sentimentResult);
+                        var foodURL = "/food?sentiment=" + sentimentIndex;
+                        var movieURL = "/movie?sentiment=" + sentimentIndex;
+                        $(foodID).attr("href", foodURL);
+                        $(movieID).attr("href", movieURL);
                     }, 10000);
                 });
             socket.emit('sentiment', JSON.stringify({_id:id}));
+
         }

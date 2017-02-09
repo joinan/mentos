@@ -43,4 +43,8 @@ router.post('/update/updateProcess', function(req, res, next){
 		});
 	});
 
+router.get('/sentiment',function(req,res){
+	res.render('sentiment');
+});
+
 module.exports = router;

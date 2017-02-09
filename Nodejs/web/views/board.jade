@@ -21,6 +21,8 @@ html(lang='ko')
 
     script(src="/socket.io/socket.io.js")
     script(type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
+    script(src='dist/sweetalert.min.js')
+    link(rel='stylesheet', type='text/css', href='dist/sweetalert.css')
   body
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
       .container
@@ -122,11 +124,29 @@ html(lang='ko')
           console.log($('#title').val());
           console.log($('#content').val());
           console.log(date);
-          var result = confirm("저장하시겠습니까?");
-          if(result){
-            socket.emit('insert_note', JSON.stringify({c_no:Number($('#c_no').val()), c_title:$('#title').val(), c_content:$('#content').val(), created_at:date}));
-            location.href='/main';
-          }
+          swal({
+                  title: "저장하시겠습니까?",
+                  type: "info",
+                  showCancelButton: true,
+                  confirmButtonText: "저장",
+                  cancelButtonText: "취소",
+                  closeOnConfirm: false,
+                  closeOnCancel: false
+              },
+              function (isConfirm) {
+                  if (isConfirm) {
+                      socket.emit('insert_note', JSON.stringify({
+                          c_no: Number($('#c_no').val()),
+                          c_title: $('#title').val(),
+                          c_content: $('#content').val(),
+                          created_at: date
+                      }));
+                      location.href = '/main';
+                  } else {
+                      swal("취소되었습니다", "", "error");
+                  }
+              });
+
         });
 
       });
