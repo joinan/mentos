@@ -103,7 +103,6 @@ io.sockets.on('connection', function(socket){
 	        socket.emit('insert_consult', JSON.stringify(result));
 	      }
 	    });
-
   });
 
   socket.on('sentiment', function(data){
@@ -129,6 +128,18 @@ io.sockets.on('connection', function(socket){
         }
     });
   });
+
+  socket.on('load_food',function(data){
+    data = JSON.parse(data);
+      conn.query('select * from food_info where f_emo_no=?', data.f_emo_no, function(err, results, fields){
+         if(err) console.log(err);
+         else{
+           socket.emit('load_food', JSON.stringify(results));
+         }
+      });
+  });
+   
+ 
   
 });
 
