@@ -30,7 +30,7 @@ var mysql = require('mysql');
 var conn = mysql.createConnection({
 	host	: 'localhost', // 주소
 	user	: 'root', // 사용자
-	password: 'mentos1234', // 비밀번호
+	password: 'test', // 비밀번호
 	database: 'mentos' // db이름
 });
 // mysql 연결
@@ -47,7 +47,7 @@ app.use(session({
 		host	: 'localhost', // db주소
 		port 	: 3306, // db포트
 		user	: 'root', // 사용자
-		password: 'mentos1234', // 비밀번호
+		password: 'test', // 비밀번호
 		database: 'mentos' // db이름
 	})
 }));

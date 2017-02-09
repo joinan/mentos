@@ -17,7 +17,10 @@ html(lang='ko')
     // WARNING: Respond.js doesn't work if you view the page via file://
     //if lt IE 9
       script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+
+    script(src="/socket.io/socket.io.js")
+    script(type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
   body
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
       .container
@@ -59,51 +62,36 @@ html(lang='ko')
       .row
         .col-lg-12
           h1.page-header
-            | 맛집 추천
+            | 나만의
+            small ★톡★ 메뉴
       // /.row
-      // Portfolio Item Row
+      // Content Row
+      .row
+        // Map Column
+        .col-md-8
+        // Contact Details Column
+        .col-md-4
+      // /.row
+
+      // Contact Form
+      // In order to set the email address and subject line for the contact form go to the bin/contact_me.php file.
       .row
         .col-md-8
-          #carousel-example-generic.carousel.slide(data-ride='carousel')
-            // Indicators
-            ol.carousel-indicators
-              li.active(data-target='#carousel-example-generic', data-slide-to='0')
-              li(data-target='#carousel-example-generic', data-slide-to='1')
-              li(data-target='#carousel-example-generic', data-slide-to='2')
-            // Wrapper for slides
-            .carousel-inner
-              .item.active
-                img.img-responsive(src='http://placehold.it/750x500', alt='')
-              .item
-                img.img-responsive(src='http://placehold.it/750x500', alt='')
-              .item
-                img.img-responsive(src='http://placehold.it/750x500', alt='')
-            // Controls
-            a.left.carousel-control(href='#carousel-example-generic', data-slide='prev')
-              span.glyphicon.glyphicon-chevron-left
-            a.right.carousel-control(href='#carousel-example-generic', data-slide='next')
-              span.glyphicon.glyphicon-chevron-right
-        .col-md-4
-          h3 신나는 술집
-          p
-            | 우울할 땐 기분이 좋아지는 술집
-      // /.row
-      // Related Projects Row
-      .row
-        .col-lg-12
-          h3.page-header 다른 음식들
-        .col-sm-3.col-xs-6
-          a(href='#')
-            img.img-responsive.img-hover.img-related(src='http://placehold.it/500x300', alt='')
-        .col-sm-3.col-xs-6
-          a(href='#')
-            img.img-responsive.img-hover.img-related(src='http://placehold.it/500x300', alt='')
-        .col-sm-3.col-xs-6
-          a(href='#')
-            img.img-responsive.img-hover.img-related(src='http://placehold.it/500x300', alt='')
-        .col-sm-3.col-xs-6
-          a(href='#')
-            img.img-responsive.img-hover.img-related(src='http://placehold.it/500x300', alt='')
+          .pull-right
+            p
+              i.fa.fa-clock-o
+              label#date
+          .div
+            input#f_emo_no(type='hidden', value='0')
+            .control-group.form-group
+              .controls
+                label 추천 메뉴
+                p.help-block
+            .control-group.form-group
+              .controls
+                #food  
+                
+                p.help-block
       // /.row
       hr
       // Footer
@@ -113,8 +101,33 @@ html(lang='ko')
             p Copyright © Mentos 2017
     // /.container
     // jQuery
-    script(src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js')
-    script(src='http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/bootstrap.min.js')
-    script(src='javascript/jquery.js')
-    // Bootstrap Core JavaScript
-    script(src='javascript/bootstrap.min.js')
+    
+  script(src='javascripts/jquery.js')
+  // Bootstrap Core JavaScript
+  script(src='javascripts/bootstrap.min.js')
+  script.
+    var d = new Date();
+    var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
+    var today = new Date().getDay();
+    var todayLabel = week[today];
+    var date = d.getFullYear() + '/' + (d.getMonth()+1) +'/' +d.getDate() + todayLabel;
+    $('#date').text(date);
+    var socket = null;
+      $(document).ready(function () {
+        socket = io.connect();
+        socket.emit('load_food', JSON.stringify({f_emo_no:Number($('#f_emo_no').val())}));
+        socket.on('load_food', function(data){
+          data = JSON.parse(data);
+          if(data.length > 0){
+            for(var i = 0; i < data.length; i++){
+              $('#food').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + data[i].f_emotion+''+data[i].f_food + 
+                '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i].f_emotion + '"></i></div></h4></div><div class="panel-body"><a href="' + data[i].f_URL + 
+                '">눌러주쎄용</a><input type="hidden" value="'+ data[i].f_emo_no  + '"></div></div></div>');
+            }
+           
+          }else{
+            $('#food').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
+          }
+        });
+        
+      });
