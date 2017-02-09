@@ -151,3 +151,4 @@ app.use(function(req, res, next) {
 //   res.status(err.status || 500);
 //   res.render('error');
 // });
+module.exports = app;

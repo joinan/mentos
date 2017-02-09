@@ -42,7 +42,11 @@ DEPRESSSum <- sum(!is.na(DEPRESSCount))
 sum1 <- c(RELAXSum, BORINGSum, HAPPYSum, ANGERSum, FEARSum, HATESum, DEPRESSSum)
 sum2 <- c(DEPRESSSum, HATESum, FEARSum, ANGERSum, HAPPYSum, BORINGSum, RELAXSum)
 if(which.max(sum1) == which.max(sum2)) {
-  index <- 0
+  if(which.max(sum1)==4){
+    index <- 4
+  }else {
+    index <- 0
+  }
 }else {
   index <- which.max(sum1)
 }

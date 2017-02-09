@@ -83,8 +83,6 @@ io.sockets.on('connection', function(socket){
         socket.emit('insert_note', JSON.stringify(result));
       }
     });
-
-
   });
   
   socket.on('load_consult', function(data){
@@ -107,13 +105,18 @@ io.sockets.on('connection', function(socket){
 
   socket.on('sentiment', function(data){
       data = JSON.parse(data);
-      var cmd = 'Rscript ./r/sentiment.R ' + data._id.toString();
+      console.log('$$$$$$$$$$$',data._id);
+      var cmd = 'Rscript ../r/sentiment.R ' + data._id.toString();
       exec(cmd, function(err, stdout, stderr){
           if (err) {
               console.error(err);
               return;
           }
-          console.log(stdout);
+          if(stdout){
+              mentos.find({_id:ObjectID.createFromHexString(data._id)}).toArray(function(err, results){
+                socket.emit('sentiment_result', {result:results[0].c_sentiment});
+              });
+          }
       });
   });
 

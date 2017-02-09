@@ -91,8 +91,8 @@ html(lang='ko')
             p Copyright © Mentos 2017
     // /.container
     // jQuery
-    script(src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js')
-    script(src='http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/bootstrap.min.js')
+    //script(src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js')
+    //sscript(src='http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/bootstrap.min.js')
     script(src='javascripts/jquery.js')
     // Bootstrap Core JavaScript
     script(src='javascripts/bootstrap.min.js')
@@ -110,6 +110,7 @@ html(lang='ko')
                 showConfirmButton: false
             });
         }
+        var sentimentResult = "분석실패";
         var socket = null;
         $(document).ready(function () {
             socket = io.connect();
@@ -138,6 +139,10 @@ html(lang='ko')
                     $('#board').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
                 }
             });
+            socket.on('sentiment_result',function(data){
+                var sentimentArray = ["애매모호함","편안함","지루함","행복함","화남","무서움","혐오함","슬픔"];
+                sentimentResult = sentimentArray[data.result];
+            });
 
 
         });
@@ -152,7 +157,7 @@ html(lang='ko')
                 },
                 function () {
                     setTimeout(function () {
-                        swal("분석완료!!");
+                        swal(sentimentResult);
                     }, 10000);
                 });
             socket.emit('sentiment', JSON.stringify({_id:id}));

@@ -65,34 +65,37 @@ html(lang='ko')
              small ★톡★ 메뉴
        // /.row
        // Content Row
-       .row
-         // Map Column
-         .col-md-8
-         // Contact Details Column
-         .col-md-4
-       // /.row
 
-       // Contact Form
-       // In order to set the email address and subject line for the contact form go to the bin/contact_me.php file.
-       .row
-         .col-md-8
-           .pull-right
-             p
-               i.fa.fa-clock-o
-               label#date
-          .div
-             input#f_emo_no(type='hidden', value='0')
-             .control-group.form-group
-               .controls
-                 label 추천 메뉴
-                 p.help-block
-             .control-group.form-group
-               .controls
-                 #food  
-                 
-                 p.help-block
-       // /.row
-       hr
+     .container
+         .row
+             // Sidebar Column
+             .col-md-15
+                 .pull-right
+                         i.fa.fa-clock-o
+                         label#date
+                     .col-md-2
+                         .list-group
+                             a.list-group-item(href='javascript:load(1)') 편안함
+                             a.list-group-item(href='javascript:load(2)') 지루함
+                             a.list-group-item(href='javascript:load(3)') 행복함
+                             a.list-group-item(href='javascript:load(4)') 화남
+                             a.list-group-item(href='javascript:load(5)') 공포
+                             a.list-group-item(href='javascript:load(6)') 혐오
+                             a.list-group-item(href='javascript:load(7)') 우울함
+                     .div
+
+                         input#f_emo_no(type='hidden', value='1')
+                         .control-group.form-group
+                             .controls
+                                 label 추천 메뉴
+                         .control-group.form-group
+                             .controls
+                                #food
+                                    h2 오늘 뭐 먹지?
+         // /.row
+
+
+         hr
        // Footer
        footer
          .row
@@ -112,21 +115,24 @@ html(lang='ko')
      var date = d.getFullYear() + '/' + (d.getMonth()+1) +'/' +d.getDate() + todayLabel;
      $('#date').text(date);
      var socket = null;
-       $(document).ready(function () {
+     $(document).ready(function () {
          socket = io.connect();
-         socket.emit('load_food', JSON.stringify({f_emo_no:Number($('#f_emo_no').val())}));
-         socket.on('load_food', function(data){
-           data = JSON.parse(data);
-           if(data.length > 0){
-             for(var i = 0; i < data.length; i++){
-               $('#food').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + data[i].f_emotion+''+data[i].f_food + 
-                 '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i].f_emotion + '"></i></div></h4></div><div class="panel-body"><a href="' + data[i].f_URL + 
-                 '">눌러주쎄용</a><input type="hidden" value="'+ data[i].f_emo_no  + '"></div></div></div>');
-             }
-            
-           }else{
-             $('#food').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
-           }
-         });
-         
        });
+     function load(num){
+         socket.emit('load_food', JSON.stringify({"f_emo_no":Number(num)}));
+         socket.on('load_food', function (data) {
+             data = JSON.parse(data);
+             if (data.length > 0) {
+                 $('#food').html('');
+                 for (var i = 0; i < data.length; i++) {
+                     $('#food').append('<div class="col-md-7"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + data[i].f_emotion + '<<<' + data[i].f_food +'>>>'+
+                         '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i].f_emotion + '"></i></div></h4></div><div class="panel-body"><a href="' + data[i].f_URL +
+                         '">눌러주쎄용</a><input type="hidden" value="' + data[i].f_emo_no + '"></div></div></div>');
+                 }
+
+             } else {
+                 $('#food').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
+             }
+         });
+
+     }
