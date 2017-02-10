@@ -69,6 +69,7 @@ router.get('/sentiment',function(req,res){
         res.render('sentiment',
             {
             	name	:req.session.user.c_name,
+				password:req.session.user.c_pw,
                 relax	:senti[1],
                 boring	:senti[2],
                 happy	:senti[3],

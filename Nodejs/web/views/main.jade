@@ -68,7 +68,7 @@ html(lang='ko')
       // Wrapper for slides
       .carousel-inner
         .item.active
-          .fill(style="background-image:url('http://placehold.it/1900x1080&text=MENTal Of uS');")
+          .fill(style="background-image:url('images/mental-health.jpg');")
       // Controls
     // Page Content
     .container
@@ -124,7 +124,7 @@ html(lang='ko')
                     for(var i = 0; i < data.length; i++){
                         $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div id="panel'+data[i]._id+'" style="'+color[data[i].c_sentiment]+'" class="panel-heading"><h4><i class="fa fa-fw fa-pencil-square-o"></i>' + data[i].c_title +
                             '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i]._id + '"></i></div></h4></div><div class="panel-body"><p>' + data[i].c_content +
-                            '</p><a href="javascript:analysis(\''+data[i]._id+'\')" class="btn btn-default">분석</a><a id="food'+data[i]._id+'"href="/food?sentiment='+data[i].c_sentiment+'" style="float:right" class="btn btn-default">음식추천</a>'+
+                            '</p><a href="javascript:analysis(\''+data[i]._id+'\',\''+data[i].c_content+'\')" class="btn btn-default">분석</a><a id="food'+data[i]._id+'"href="/food?sentiment='+data[i].c_sentiment+'" style="float:right" class="btn btn-default">음식추천</a>'+
                             '<a id="movie'+data[i]._id+'" href="/movie?sentiment='+data[i].c_sentiment+'" style="float:right" class="btn btn-default">영화추천</a></div></div></div>');
                     }
                     $('i').click(function(){
@@ -164,8 +164,16 @@ html(lang='ko')
 
 
         });
-        function analysis(id){
+        function analysis(id,content){
             socket.emit('sentiment', JSON.stringify({_id: id}));
+            if(content.length < 50)
+                var time = 11000
+            else{
+                if(content.length < 500)
+                    var time = 13000
+                else
+                    var time = 18000
+            }
             var foodID = "#food" + id;
             var movieID = "#movie" + id;
             var panelID = "#panel" + id;
@@ -186,7 +194,7 @@ html(lang='ko')
                         $(foodID).attr("href", foodURL);
                         $(movieID).attr("href", movieURL);
                         $(panelID).attr("style",panelColor);
-                    }, 10000);
+                    }, time);
                 });
 
         }
