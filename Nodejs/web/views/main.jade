@@ -110,8 +110,10 @@ html(lang='ko')
                 showConfirmButton: false
             });
         }
+        var panelColor = null;
         var sentimentIndex = null;
-        var sentimentResult = "분석실패";
+        var sentimentResult = null;
+        var color = ["background-color:#f5f5f5;", "background-color:#5882FA;", "background-color:#F7819F;", "background-color:#A9F5A9;", "background-color:#F3F781;", "background-color:#81F781;", "background-color:#F6CEF5;", "background-color:#F78181;"];
         var socket = null;
         $(document).ready(function () {
             socket = io.connect();
@@ -120,7 +122,7 @@ html(lang='ko')
                 data = JSON.parse(data);
                 if(data.length > 0){
                     for(var i = 0; i < data.length; i++){
-                        $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-pencil-square-o"></i>' + data[i].c_title +
+                        $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div id="panel'+data[i]._id+'" style="'+color[data[i].c_sentiment]+'" class="panel-heading"><h4><i class="fa fa-fw fa-pencil-square-o"></i>' + data[i].c_title +
                             '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i]._id + '"></i></div></h4></div><div class="panel-body"><p>' + data[i].c_content +
                             '</p><a href="javascript:analysis(\''+data[i]._id+'\')" class="btn btn-default">분석</a><a id="food'+data[i]._id+'"href="/food" style="float:right" class="btn btn-default">음식추천</a>'+
                             '<a id="movie'+data[i]._id+'" href="/movie" style="float:right" class="btn btn-default">영화추천</a></div></div></div>');
@@ -149,18 +151,24 @@ html(lang='ko')
                     $('#board').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
                 }
             });
-            socket.on('sentiment_result',function(data){
+
+            socket.on('sentiment_result', function (data) {
                 var index = data.result;
-                var sentimentArray = ["애매모호함","편안함","지루함","행복함","화남","무서움","혐오함","슬픔"];
+                var sentimentArray = ["애매모호함", "편안함", "지루함", "행복함", "화남", "무서움", "혐오함", "슬픔"];
+
+                panelColor = color[index];
                 sentimentIndex = data.result;
                 sentimentResult = sentimentArray[index];
             });
 
 
+
         });
         function analysis(id){
+            socket.emit('sentiment', JSON.stringify({_id: id}));
             var foodID = "#food" + id;
             var movieID = "#movie" + id;
+            var panelID = "#panel" + id;
 
             swal({
                     title: "분석하시겠습니까?",
@@ -177,8 +185,8 @@ html(lang='ko')
                         var movieURL = "/movie?sentiment=" + sentimentIndex;
                         $(foodID).attr("href", foodURL);
                         $(movieID).attr("href", movieURL);
+                        $(panelID).attr("style",panelColor);
                     }, 10000);
                 });
-            socket.emit('sentiment', JSON.stringify({_id:id}));
 
         }
