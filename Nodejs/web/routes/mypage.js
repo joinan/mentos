@@ -10,6 +10,22 @@ var conn = mysql.createConnection({
 // mysql 연결
 conn.connect();
 
+var MongoClient = require('mongodb').MongoClient;
+var ObjectID = require('mongodb').ObjectID;
+
+//Connection URL
+var url = 'mongodb://localhost:27017/mentos';
+//Use connect method to connect to the Server
+var dbObj = null;
+MongoClient.connect(url, function(err, db) {
+    if(!err){
+        dbObj = db;
+    }else{
+        console.log(err);
+    }
+//db.close();
+});
+
 /* GET home page. */
 router.get('/', function(req, res, next) {
   res.render('mypage', {name : req.session.user.c_name});
@@ -44,7 +60,26 @@ router.post('/update/updateProcess', function(req, res, next){
 	});
 
 router.get('/sentiment',function(req,res){
-	res.render('sentiment');
+    var mentos = dbObj.collection('mentos');
+    var senti = [0,0,0,0,0,0,0,0];
+    mentos.find({c_no:req.session.user.c_no}).toArray(function(err, results){
+    	for(var i =0;i<results.length; i++){
+        	senti[results[i].c_sentiment]++;
+		}
+        res.render('sentiment',
+            {
+            	name	:req.session.user.c_name,
+                relax	:senti[1],
+                boring	:senti[2],
+                happy	:senti[3],
+                anger	:senti[4],
+                fear	:senti[5],
+                hate	:senti[6],
+                depress	:senti[7],
+                question:senti[0]
+            });
+    });
+
 });
 
 module.exports = router;

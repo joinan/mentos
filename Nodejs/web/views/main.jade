@@ -150,9 +150,10 @@ html(lang='ko')
                 }
             });
             socket.on('sentiment_result',function(data){
+                var index = data.result;
                 var sentimentArray = ["애매모호함","편안함","지루함","행복함","화남","무서움","혐오함","슬픔"];
                 sentimentIndex = data.result;
-                sentimentResult = sentimentArray[data.result];
+                sentimentResult = sentimentArray[index];
             });
 
 

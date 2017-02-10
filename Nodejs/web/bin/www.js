@@ -105,7 +105,6 @@ io.sockets.on('connection', function(socket){
 
   socket.on('sentiment', function(data){
       data = JSON.parse(data);
-      console.log('$$$$$$$$$$$',data._id);
       var cmd = 'Rscript ../r/sentiment.R ' + data._id.toString();
       exec(cmd, function(err, stdout, stderr){
           if (err) {
@@ -113,6 +112,7 @@ io.sockets.on('connection', function(socket){
               return;
           }
           if(stdout){
+              console.log(stdout);
               mentos.find({_id:ObjectID.createFromHexString(data._id)}).toArray(function(err, results){
                 socket.emit('sentiment_result', {result:results[0].c_sentiment});
               });
