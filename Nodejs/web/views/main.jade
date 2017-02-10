@@ -124,8 +124,8 @@ html(lang='ko')
                     for(var i = 0; i < data.length; i++){
                         $('#board').append('<div class="col-md-4"><div class="panel panel-default"><div id="panel'+data[i]._id+'" style="'+color[data[i].c_sentiment]+'" class="panel-heading"><h4><i class="fa fa-fw fa-pencil-square-o"></i>' + data[i].c_title +
                             '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i]._id + '"></i></div></h4></div><div class="panel-body"><p>' + data[i].c_content +
-                            '</p><a href="javascript:analysis(\''+data[i]._id+'\')" class="btn btn-default">분석</a><a id="food'+data[i]._id+'"href="/food" style="float:right" class="btn btn-default">음식추천</a>'+
-                            '<a id="movie'+data[i]._id+'" href="/movie" style="float:right" class="btn btn-default">영화추천</a></div></div></div>');
+                            '</p><a href="javascript:analysis(\''+data[i]._id+'\')" class="btn btn-default">분석</a><a id="food'+data[i]._id+'"href="/food?sentiment='+data[i].c_sentiment+'" style="float:right" class="btn btn-default">음식추천</a>'+
+                            '<a id="movie'+data[i]._id+'" href="/movie?sentiment='+data[i].c_sentiment+'" style="float:right" class="btn btn-default">영화추천</a></div></div></div>');
                     }
                     $('i').click(function(){
                         var iid = $(this).attr('name');

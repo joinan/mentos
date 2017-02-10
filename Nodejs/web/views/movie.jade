@@ -16,8 +16,10 @@ html(lang='ko')
     // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
     // WARNING: Respond.js doesn't work if you view the page via file://
     //if lt IE 9
-      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    script(src="/socket.io/socket.io.js")
+    script(type="text/javascript" src="http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js")
   body
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
       .container
@@ -37,12 +39,12 @@ html(lang='ko')
               a(href='/board') 내 노트
             li.dropdown.active
               a.dropdown-toggle(href='#', data-toggle='dropdown')
-                | 추천 
+                | 추천
                 b.caret
               ul.dropdown-menu
-                li.active
-                  a(href='/movie') 영화 추천
                 li
+                  a(href='/movie') 영화 추천
+                li.active
                   a(href='/food') 맛집 추천
             li
               a(href='/consult') 멘탈클리닉
@@ -59,63 +61,83 @@ html(lang='ko')
       .row
         .col-lg-12
           h1.page-header
-            | 영화 추천
+            | 오직 나만의
+            small ★톡톡★ 무비무비
       // /.row
-      // Portfolio Item Row
+      // Content Row
+
+    .container
       .row
-        .col-md-8
-          #carousel-example-generic.carousel.slide(data-ride='carousel')
-            // Indicators
-            ol.carousel-indicators
-              li.active(data-target='#carousel-example-generic', data-slide-to='0')
-              li(data-target='#carousel-example-generic', data-slide-to='1')
-              li(data-target='#carousel-example-generic', data-slide-to='2')
-            // Wrapper for slides
-            .carousel-inner
-              .item.active
-                img.img-responsive(src='http://placehold.it/750x500', alt='')
-              .item
-                img.img-responsive(src='http://placehold.it/750x500', alt='')
-              .item
-                img.img-responsive(src='http://placehold.it/750x500', alt='')
-            // Controls
-            a.left.carousel-control(href='#carousel-example-generic', data-slide='prev')
-              span.glyphicon.glyphicon-chevron-left
-            a.right.carousel-control(href='#carousel-example-generic', data-slide='next')
-              span.glyphicon.glyphicon-chevron-right
-        .col-md-4
-          h3 코미디 영화
-          p
-            | 우울할 땐 코미디 영화가 최고
+        // Sidebar Column
+        .col-md-15
+          .pull-right
+            i.fa.fa-clock-o
+            label#date
+          .col-md-2
+            .list-group
+              a.list-group-item(href='javascript:load(1)') 편안함
+              a.list-group-item(href='javascript:load(2)') 지루함
+              a.list-group-item(href='javascript:load(3)') 행복함
+              a.list-group-item(href='javascript:load(4)') 화남
+              a.list-group-item(href='javascript:load(5)') 공포
+              a.list-group-item(href='javascript:load(6)') 혐오
+              a.list-group-item(href='javascript:load(7)') 우울함
+          .div
+
+            input#m_emo_no(type='hidden', value='1')
+            .control-group.form-group
+              .controls
+                label 추천 영화
+            .control-group.form-group
+              .controls
+                #movie
+                  h2 오늘 뭐 보지?
       // /.row
-      // Related Projects Row
+
+
+      hr
+    // Footer
+    footer
       .row
         .col-lg-12
-          h3.page-header 다른영화들
-        .col-sm-3.col-xs-6
-          a(href='#')
-            img.img-responsive.img-hover.img-related(src='http://placehold.it/500x300', alt='')
-        .col-sm-3.col-xs-6
-          a(href='#')
-            img.img-responsive.img-hover.img-related(src='http://placehold.it/500x300', alt='')
-        .col-sm-3.col-xs-6
-          a(href='#')
-            img.img-responsive.img-hover.img-related(src='http://placehold.it/500x300', alt='')
-        .col-sm-3.col-xs-6
-          a(href='#')
-            img.img-responsive.img-hover.img-related(src='http://placehold.it/500x300', alt='')
-      // /.row
-      hr
-      // Footer
-      footer
-        .row
-          .col-lg-12
-            p Copyright © Mentos 2017
+          p Copyright © Mentos 2017
     // /.container
     // jQuery
-    script(src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js')
-    script(src='http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/bootstrap.min.js')
 
-    script(src='javascript/jquery.js')
-    // Bootstrap Core JavaScript
-    script(src='javascript/bootstrap.min.js')
+  script(src='javascripts/jquery.js')
+  // Bootstrap Core JavaScript
+  script(src='javascripts/bootstrap.min.js')
+  script.
+      var d = new Date();
+      var week = new Array('일요일', '월요일', '화요일', '수요일', '목요일', '금요일', '토요일');
+      var today = new Date().getDay();
+      var todayLabel = week[today];
+      var date = d.getFullYear() + '/' + (d.getMonth()+1) +'/' +d.getDate() + todayLabel;
+      $('#date').text(date);
+      var socket = null;
+      $(document).ready(function () {
+          socket = io.connect();
+          $.urlParam = function (name) {
+              var results = new RegExp('[\?&amp;]' + name + '=([^&amp;#]*)').exec(window.location.href);
+              return results[1] || 0;
+          }
+          load($.urlParam('sentiment'));
+      });
+      function load(num){
+          socket.emit('load_movie', JSON.stringify({"m_emo_no":Number(num)}));
+          socket.on('load_movie', function (data) {
+              data = JSON.parse(data);
+              if (data.length > 0) {
+                  $('#movie').html('');
+                  for (var i = 0; i < data.length; i++) {
+                      $('#movie').append('<div class="col-md-7"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + data[i].m_emotion + '<<<' + data[i].m_movie +'>>>'+
+                          '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i].m_emotion + '"></i></div></h4></div><div class="panel-body"><a href="' + data[i].m_URL +
+                          '">오늘 뭐보지잉~~~?</a><input type="hidden" value="' + data[i].m_emo_no + '"></div></div></div>');
+                  }
+
+              } else {
+                  $('#movie').append('<div class="col-lg-12"><ol class= "breadcrumb" >게시글이 없습니다.</ol></div >');
+              }
+          });
+
+      }

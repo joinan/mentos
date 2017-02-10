@@ -141,6 +141,16 @@ io.sockets.on('connection', function(socket){
          }
       });
   });
+
+  socket.on('load_movie',function(data){
+      data = JSON.parse(data);
+      conn.query('select * from movie_info where m_emo_no=?', data.m_emo_no, function(err, results, fields){
+          if(err) console.log(err);
+          else{
+              socket.emit('load_movie', JSON.stringify(results));
+          }
+      });
+  });
    
  
   
