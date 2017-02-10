@@ -16,8 +16,10 @@ html(lang='ko')
     // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
     // WARNING: Respond.js doesn't work if you view the page via file://
     //if lt IE 9
-      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    script(src='../dist/sweetalert.min.js')
+    link(rel='stylesheet', type='text/css', href='../dist/sweetalert.css')
   body
     // Navigation
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
@@ -38,7 +40,7 @@ html(lang='ko')
               a(href='/board') 내 노트
             li.dropdown
               a.dropdown-toggle(href='#', data-toggle='dropdown')
-                | 추천 
+                | 추천
                 b.caret
               ul.dropdown-menu
                 li
@@ -63,6 +65,8 @@ html(lang='ko')
       // /.row
       // The circle icons use Font Awesome's stacked icon classes. For more information, visit http://fontawesome.io/examples/
       .row
+        input#c_no(type='hidden' name="no" value='#{c_no}')
+        input#c_pw(type='hidden' name="pw" value='#{c_pw}')
         .col-md-3.col-sm-6
           .panel.panel-default.text-center
             .panel-heading
@@ -77,7 +81,7 @@ html(lang='ko')
             .panel-heading
               span.fa-stack.fa-5x
                 i.fa.fa-circle.fa-stack-2x.text-success
-                i.fa.fa-search-plus.fa-stack-1x.fa-inverse
+                i.fa.fa-heart.fa-stack-1x.fa-inverse
             .panel-body
               h4 내 감정분석
               a.btn.btn-success(href='/mypage/sentiment') 바로가기
@@ -98,7 +102,7 @@ html(lang='ko')
                 i.fa.fa-times-circle.fa-stack-1x.fa-inverse
             .panel-body
               h4 회원탈퇴
-              a.btn.btn-danger(href='#') 바로가기
+              a.btn.btn-danger(href='javascript:signout();') 바로가기
       hr
       // Footer
       footer
@@ -110,3 +114,65 @@ html(lang='ko')
     script(src='http://ajax.aspnetcdn.com/ajax/jQuery/jquery-1.11.2.min.js')
     script(src='http://ajax.aspnetcdn.com/ajax/bootstrap/3.3.4/bootstrap.min.js')
     // Bootstrap Core JavaScript
+    script.
+        function signout(){
+            var c_no = $('#c_no').val();
+            var c_pw = $('#c_pw').val();
+            swal({
+                    title: "갈거야?",
+                    text: "복구 안해줌!",
+                    type: "warning",
+                    showCancelButton: true,
+                    confirmButtonColor: "#DD6B55",
+                    confirmButtonText: "응 갈거야!",
+                    cancelButtonText: "안갈래!",
+                    closeOnConfirm: false,
+                    closeOnCancel: false
+                },
+                function(isConfirm){
+                    if (isConfirm) {
+                        swal({
+                                title: "비밀번호 확인!",
+                                text: "비밀번호 기억하지?",
+                                type: "input",
+                                showCancelButton: true,
+                                closeOnConfirm: false,
+                                animation: "slide-from-top",
+                                inputPlaceholder: "비밀번호"
+                            },
+                            function(inputValue){
+                                if(inputValue === c_pw){
+                                    $.ajax({
+                                        url:"/mypage/signout",
+                                        dataType:'json',
+                                        type:"POST",
+                                        data:{c_no:c_no},
+                                        success:function(data){
+                                            swal({title:"잘가!", type:"success",showCancelButton: false}, function(){
+                                                location.href='/logout';
+                                            });
+                                        },
+                                        error:function(request,status,error){
+                                            alert('코드:'+request.status+'\n'+'메세지:'+request.responseText+'\n'+'에러:'+error);
+                                        }
+                                    });
+
+                                }
+                                else if (inputValue === "") {
+                                    swal.showInputError("한 글자 이상은 써야지!");
+                                    return false
+                                }
+                                else if (inputValue === false) return false;
+
+                                else {
+                                    swal.showInputError("그거 아닐걸?");
+                                    return false
+                                }
+
+                            });
+                    } else {
+                        swal("취소", "노트들은 무사해 :)", "error");
+                    }
+                });
+
+        }

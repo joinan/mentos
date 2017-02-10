@@ -28,7 +28,7 @@ MongoClient.connect(url, function(err, db) {
 
 /* GET home page. */
 router.get('/', function(req, res, next) {
-  res.render('mypage', {name : req.session.user.c_name});
+    res.render('mypage', {c_no : req.session.user.c_no, c_pw : req.session.user.c_pw});
 });
 
 router.get('/update', function(req, res, next){
@@ -81,6 +81,23 @@ router.get('/sentiment',function(req,res){
             });
     });
 
+});
+
+router.post('/signout', function(req,res){
+    var mentos = dbObj.collection('mentos');
+    var c_no = req.session.user.c_no;
+    conn.query('delete from client_info where c_no=?', c_no, function(err, result, next){
+        if(err) console.log(err);
+        else{
+            mentos.remove({c_no:c_no},function(err, numberOfRemovedDocs){
+                if(err) console.log(err);
+                else{
+                    console.log(numberOfRemovedDocs+'건의 노트 삭제');
+                    res.jsonp({numberOfRemovedDocs:numberOfRemovedDocs});
+                };
+            });
+        }
+    });
 });
 
 module.exports = router;
