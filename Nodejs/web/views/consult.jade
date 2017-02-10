@@ -13,26 +13,62 @@ html(lang='ko')
     link(href='stylesheets/modern-business.css', rel='stylesheet')
     // Custom Fonts
     link(href='font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
-    // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
-    // WARNING: Respond.js doesn't work if you view the page via file://
-    //if lt IE 9
-      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
-      script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
-      script(src='/socket.io/socket.io.js')
-      script(type='text/javascript').
+    script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+    script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(type='text/javascript').
         var socket = null;
+        var position;
+
         $(document).ready(function() {//callback 함수
-        socket = io.connect();//server에 접속 시동
-        socket.emit('load_consult',JSON.stringify({c_no:#{name}));
-        socket.on('consult_list',function(data){//서버가 주는 article리스트 받는 부분
-        data = JSON.parse(data);
-        for (var i = 0; i < data.length; i++) {
-         $('#consult_list').append('<a href="/consultdetail?no='+data[i].no+'">'+data[i].title+'</a>&nbsp;');
-        }
-        });
+            socket = io.connect();//server에 접속 시동
+            socket.emit('check_position',JSON.stringify({"c_no":$('#c_no').val()}));
+            socket.on('res_position',function(data){
+                data=JSON.parse(data);
+                position=Number(data[0].c_doc);
+
+                if(position==0){
+                    socket.emit('load_consult','');
+                    socket.on('consult_ready',function(data){
+                        data=JSON.parse(data);
+                        for(var i=0;i<data.length;i++){
+                            var doc_noT = data[i];
+                            socket.emit('consult_request',JSON.stringify({"doc_no":doc_noT}));
+                        }
+                    });
+                }
+                else if(position==1){
+                    socket.emit('load_consult_doc','');
+                    socket.on('consult_ready_doc',function(data){
+                        data=JSON.parse(data);
+                        for(var i=0;i<data.length;i++){
+                            var c_noT = data[i];
+                            socket.emit('consult_request_doc',JSON.stringify({"c_no":c_noT}));
+                        }
+                    });
+                }
+            });
+            socket.on('consult_list',function(data){//서버가 주는 article리스트 받는 부분
+                data = JSON.parse(data);
+                $('#consult_list').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><a href="/consult/consultdetail?doc_no='
+                    +data.item.doc_no+'&c_no='+data.item.c_no+'">' + data.name.name +
+                    ' 선생님</a></h4></div><div class="panel-body"><p><h4>'
+                    + data.item.created +
+                    '</p></h4></div></div></div>');
+            });
+
+            socket.on('consult_list_doc',function(data){//서버가 주는 article리스트 받는 부분
+                data = JSON.parse(data);
+                $('#consult_list').append('<div class="col-md-4"><div class="panel panel-default"><div class="panel-heading"><h4><a href="/consult/consultdetail?doc_no='
+                    +data.item.doc_no+'&c_no='+data.item.c_no+'">' + data.name.c_name +
+                    ' 님</a></h4></div><div class="panel-body"><p><h4>'
+                    + data.item.created +
+                    '</p></h4></div></div></div>');
+            });
         });
   body
+    input#c_no(type='hidden' value='#{c_no}')
     // Navigation
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
       .container
@@ -52,7 +88,7 @@ html(lang='ko')
               a(href='/board') 내 노트
             li.dropdown.active
               a.dropdown-toggle(href='#', data-toggle='dropdown')
-                | 추천 
+                | 추천
                 b.caret
               ul.dropdown-menu
                 li
@@ -60,7 +96,7 @@ html(lang='ko')
                 li
                   a(href='/food') 맛집 추천
             li.active
-              a(href='/consult') 멘탈클리닉    
+              a(href='/consult') 멘탈클리닉
             li
               a(href='/mypage') 마이페이지
             li
@@ -74,22 +110,11 @@ html(lang='ko')
         .col-lg-12
           h1.page-header
             | 상담내역
-           .container
-            .row
-                .col-md-4
-                    .panel.panel-default
-                        .panel-heading
-                            h4
-                                i.fa.fa-fw.fa-check
-                                |  
-                                ul#article_list
-                        |                     
-                        .panel-body
-                            p 
-                            //a(href='/consult/#{article.no}') #{article.content}
+          .container
+          #consult_list
 
       hr
-      a.btn.btn-default(href='consultdetail') 글쓰기
+      a.btn.btn-default(href='doctorlist?c_no='+c_no) 새로운 상담
       // Footer
       footer
         .row

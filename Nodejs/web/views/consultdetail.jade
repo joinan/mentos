@@ -13,31 +13,56 @@ html(lang='ko')
     link(href='stylesheets/modern-business.css', rel='stylesheet')
     // Custom Fonts
     link(href='font-awesome/css/font-awesome.min.css', rel='stylesheet', type='text/css')
-    // HTML5 Shim and Respond.js IE8 support of HTML5 elements and media queries
-    // WARNING: Respond.js doesn't work if you view the page via file://
-    //if lt IE 9
-      script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
-      script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
-      script(type='text/javascript', src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
-      script(src='/socket.io/socket.io.js')
-      script(type='text/javascript').
+
+    script(src='https://oss.maxcdn.com/libs/html5shiv/3.7.0/html5shiv.js')
+    script(src='https://oss.maxcdn.com/libs/respond.js/1.4.2/respond.min.js')
+
+    script(type='text/javascript' src='http://ajax.googleapis.com/ajax/libs/jquery/1.9.1/jquery.min.js')
+    script(src='/socket.io/socket.io.js')
+    script(type='text/javascript').
         var socket=null;
-        $(document).ready(function(){//callback 함수
-        socket = io.connect();//server에 접속 시동
-        socket.on('insert_consult',function(data){
-        location.href='consult';
+        $(document).ready(function(){
+            $.urlParam = function(name) {
+                var results = new RegExp('[\\?&amp;]' + name + '=([^&amp;#]*)')
+                    .exec(window.location.href);
+                return results[1] || 0;
+            }
+            var c_no = $.urlParam('c_no');
+            var doc_no = $.urlParam('doc_no');
+            var position;
+            socket = io.connect();
+            socket.emit('check_status',JSON.stringify({"c_no":c_no}));
+            socket.on('res_status',function(data){
+                data=JSON.parse(data);
+                position=Number(data[0].c_doc);
+                socket.emit('load_consultdetail',JSON.stringify({doc_no:Number(doc_no),c_no:Number(c_no)}));
+                socket.on('consult_detaillist',function(data){//서버가 주는 article리스트 받는 부분
+                    data = JSON.parse(data);
+                    for (var i = 0; i < data.length; i++) {
+                        if(position==0){
+                            $('#consult_list').append('<div align="right">회원님</div><div align="right">'+data[i].consult_content+'</div>');
+                        }
+                        else if(position==1){
+                            $('#consult_list').append('<div>상담선생님</div><div>'+data[i].consult_content+'</div>');
+                        }
+                    }
+                });
+
+
+                socket.on('inserted_consult',function(data){
+                    location.reload(true);
+                });
+
+                $('#insert').click(function(){
+                    var result = confirm("저장하시겠습니까?");
+                    if(result){
+                        var created = new Date();
+                        var consultContent=$('#consultContent').val();
+                        socket.emit('insert_consult',JSON.stringify({consultContent:consultContent,doc_no:Number(doc_no),c_no:Number(c_no),w_no:position,created:created}));
+                    }
+                });
+            });
         });
-        $('#insert').click(function(){          
-        var result = confirm("저장하시겠습니까?");
-        if(result){
-        var created = new Date();
-        var consultContent=$('#consultContent').val();
-        var c_no=Number($('#c_no').val());
-        socket.emit('insert_consult',JSON.stringify({consultContent:consultContent,c_no:c_no,created:created}));
-        }
-        }
-        });
-        
   body
     nav.navbar.navbar-inverse.navbar-fixed-top(role='navigation')
       .container
@@ -57,7 +82,7 @@ html(lang='ko')
               a(href='/board') 내 노트
             li.dropdown
               a.dropdown-toggle(href='#', data-toggle='dropdown')
-                | 추천 
+                | 추천
                 b.caret
               ul.dropdown-menu
                 li
@@ -65,7 +90,7 @@ html(lang='ko')
                 li
                   a(href='/food') 맛집 추천
             li
-              a(href='/consult') 멘탈클리닉 
+              a(href='/consult') 멘탈클리닉
             li
               a(href='/mypage') 마이페이지
             li
@@ -79,13 +104,14 @@ html(lang='ko')
       .row
         .col-lg-12
           h1.page-header
-           .panel.panel-default
-            .panel-heading
+            .panel.panel-default
+              .panel-heading
                 h4
-                  | dfdf
-           .controls
-                input#consultContent.form-control(type='textarea' name='consultContent')
-                input#c_no(type='hidden' value='#{c_no}')
+                  |
+                  #consult_list
+            .controls
+              input#consultContent.form-control(type='textarea' name='consultContent')
+              input#c_no(type='hidden' value='#{c_no}')
             button.btn.btn-primary(id='insert') 저장
           hr
           // Pager
@@ -104,7 +130,7 @@ html(lang='ko')
             p Copyright © Mentos 2017
     // /.container
     // jQuery
-    
+
     script(src='javascripts/jquery.js')
     // Bootstrap Core JavaScript
     script(src='javascripts/bootstrap.min.js')

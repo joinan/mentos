@@ -90,7 +90,7 @@ html(lang='ko')
                                  label 추천 메뉴
                          .control-group.form-group
                              .controls
-                                #food
+                                 #food
                                     h2 오늘 뭐 먹지?
          // /.row
 
@@ -131,9 +131,9 @@ html(lang='ko')
              if (data.length > 0) {
                  $('#food').html('');
                  for (var i = 0; i < data.length; i++) {
-                     $('#food').append('<div class="col-md-7"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + data[i].f_emotion + '<<<' + data[i].f_food +'>>>'+
+                     $('#food').append('<center><div class="col-md-7"><div class="panel panel-default"><div class="panel-heading"><h4><i class="fa fa-fw fa-check"></i>' + data[i].f_emotion + '<<<' + data[i].f_food +'>>>'+
                          '<div class="close"><i class="fa fa-fw fa-remove" name="' + data[i].f_emotion + '"></i></div></h4></div><div class="panel-body"><a href="' + data[i].f_URL +
-                         '">눌러주쎄용</a><input type="hidden" value="' + data[i].f_emo_no + '"></div></div></div>');
+                         '">눌러주쎄용</a><input type="hidden" value="' + data[i].f_emo_no + '"></div></div></div></center>');
                  }
 
              } else {

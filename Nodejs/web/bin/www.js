@@ -59,6 +59,7 @@ io.sockets.on('connection', function(socket){
   console.log('connection');
   //////////////////////////
   var mentos = dbObj.collection('mentos');
+  var consult = dbObj.collection('consult');
 
   socket.on('delete_note', function(data){
     data = JSON.parse(data);
@@ -84,24 +85,8 @@ io.sockets.on('connection', function(socket){
       }
     });
   });
-  
-  socket.on('load_consult', function(data){
-	    data = JSON.parse(data);
-	    mentos.find({c_no:data.c_no}).toArray(function(err, results){
-	      socket.emit('consult_list', JSON.stringify(results));
-	    });
-  });
-  
-  socket.on('insert_consult', function(data){
-	    data = JSON.parse(data);
-	    mentos.save({c_no:Number(data.c_no), consult_content:data.consultContent, created:data.created}, function(err, result){
-	      if(err) console.log(err);
-	      else {
-	        console.log(result);
-	        socket.emit('insert_consult', JSON.stringify(result));
-	      }
-	    });
-  });
+
+
 
   socket.on('sentiment', function(data){
       data = JSON.parse(data);
@@ -119,6 +104,73 @@ io.sockets.on('connection', function(socket){
           }
       });
   });
+
+    socket.on('check_position',function(data){
+        data = JSON.parse(data);
+        conn.query('SELECT * FROM client_info where c_no=?',Number(data.c_no),function(err,results){
+            socket.emit('res_position',JSON.stringify(results));
+        });
+    });
+    socket.on('check_status',function(data){
+        data = JSON.parse(data);
+        conn.query('SELECT * FROM client_info where c_no=?',Number(data.c_no),function(err,results){
+            socket.emit('res_status',JSON.stringify(results));
+        });
+    });
+    socket.on('load_consult', function(data){
+        consult.distinct("doc_no",function(err, results){
+            socket.emit('consult_ready',JSON.stringify(results));
+        });
+    });
+    socket.on('load_consult_doc', function(data){
+        consult.distinct("c_no",function(err, results){
+            socket.emit('consult_ready_doc',JSON.stringify(results));
+        });
+    });
+    socket.on('consult_request',function(data){
+        data = JSON.parse(data);
+        conn.query('Select * from doctor_info where doc_no=?',Number(data.doc_no), function(err,results){
+            if(!err){
+                consult.findOne({doc_no:Number(data.doc_no)},function(err,item){
+                    socket.emit('consult_list',JSON.stringify({name : results[0],item:item}));
+                });
+            }
+        });
+    });
+    socket.on('consult_request_doc',function(data){
+        data = JSON.parse(data);
+        conn.query('Select * from client_info where c_no=?',Number(data.c_no), function(err,results){
+            if(!err){
+                consult.findOne({c_no:Number(data.c_no)},function(err,item){
+                    console.log(results[0]);
+                    socket.emit('consult_list_doc',JSON.stringify({name : results[0],item:item}));
+                });
+            }
+        });
+    });
+
+    socket.on('load_consultdetail', function(data){
+        data = JSON.parse(data);
+        consult.find({c_no:data.c_no,doc_no:data.doc_no}).toArray(function(err, results){
+            console.log(results);
+            socket.emit('consult_detaillist', JSON.stringify(results));
+        });
+    });
+
+    socket.on('insert_consult', function(data){
+        data = JSON.parse(data);
+        consult.save({c_no:Number(data.c_no),doc_no:data.doc_no, consult_content:data.consultContent, created:data.created}, function(err, result){
+            if(err) console.log(err);
+            else {
+                socket.emit('inserted_consult', JSON.stringify(result));
+            }
+        });
+    });
+    socket.on('load_doctor', function(data) {
+        conn.query('select * from doctor_info', function(err, results   , fields) {
+            socket.emit('doctor_list', JSON.stringify(results));
+        });
+    });
 
   socket.on('load_info', function(data){
     data = JSON.parse(data);
