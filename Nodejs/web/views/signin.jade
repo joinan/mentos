@@ -118,6 +118,14 @@ html(lang='ko')
                 .form-group
                   input#doc(type='checkbox' name='reg_doc' value='1')
                   label 의사
+                .form-group(id='hospital')
+                  label.sr-only(for='reg_name_hospital') 병원이름
+                  input#reg_hospital.form-control(type='text', name='reg_name_hospital', placeholder='병원이름')
+                  font(color='red' id='emptyHospital')
+                .form-group(id='address')
+                  label.sr-only(for='reg_address') 병원주소
+                  input#reg_address.form-control(type='text', name='reg_address', placeholder='병원주소')
+                  font(color='red' id='emptyAddress')
                 .form-group
                   label 비밀번호 찾기위한 질문
                   select#reg_age.form-control(name='reg_question')
@@ -224,7 +232,17 @@ html(lang='ko')
             $("#emptyPasswordConfirm").text(" ");
         }
       });
+
       $(document).ready(function(){
+        var doc = 0;
+        $("#hospital").hide();
+        $("#address").hide();
+        $("input[name=reg_doc]").change(function () {
+
+                $("#hospital").show();
+                $("#address").show();
+
+        });
         $("#regSub").click(function(){
             if ($("#reg_email").val() == "") {
                 swal("이메일을 입력하세요.","","error");

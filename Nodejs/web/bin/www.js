@@ -90,12 +90,15 @@ io.sockets.on('connection', function(socket){
 
   socket.on('sentiment', function(data){
       data = JSON.parse(data);
-      var cmd = 'Rscript ../r/sentiment.R ' + data._id.toString();
+      console.log('센티멘트 펑션실행');
+      var cmd = 'Rscript r/sentiment.R ' + data._id.toString();
+      console.log('명령어 : ',cmd);
       exec(cmd, function(err, stdout, stderr){
           if (err) {
               console.error(err);
               return;
           }
+          console.log('@@',stdout);
           if(stdout){
               console.log(stdout);
               mentos.find({_id:ObjectID.createFromHexString(data._id)}).toArray(function(err, results){

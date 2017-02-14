@@ -166,6 +166,7 @@ html(lang='ko')
         });
         function analysis(id,content){
             socket.emit('sentiment', JSON.stringify({_id: id}));
+            alert("@@");
             if(content.length < 50)
                 var time = 11000
             else{
