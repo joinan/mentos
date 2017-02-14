@@ -166,14 +166,13 @@ html(lang='ko')
         });
         function analysis(id,content){
             socket.emit('sentiment', JSON.stringify({_id: id}));
-            alert("@@");
             if(content.length < 50)
-                var time = 11000
+                var time = 15000
             else{
                 if(content.length < 500)
-                    var time = 13000
-                else
                     var time = 18000
+                else
+                    var time = 25000
             }
             var foodID = "#food" + id;
             var movieID = "#movie" + id;
